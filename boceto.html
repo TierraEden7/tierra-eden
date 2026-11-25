@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#F5EEE2">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Tierra Eden">
+<title>Tierra Eden · Boceto</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="iconos/apple-touch-icon.png"><link rel="icon" type="image/png" href="iconos/icon-192.png">
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#F5EEE2; --lino:#EBE0CC; --salvia:#A9B393; --musgo:#5E6E4B;
+  --bosque:#2B3626; --arcilla:#B87454; --miel:#DDA94B; --tinta:#3A3329;--oscuro:#2B3626;--claro:#F5EEE2;--txt:#5b5243;--txt2:#6b6150;--linea:#d8c9ac;--hojaA:#5E6E4B;--hojaB:#7C8C66;--hojaC:#94A37D;--f1a:#D7DCC4;--f1b:#B7C19D;--f2a:#F2D9AE;--f2b:#E2B56C;--f3a:#EBCDB8;--f3b:#CF987A;--arco1:#DDD6BC;--arco2:#B9C29E;--halo:221,169,75;--histtxt:#d9d3c0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--crema);color:var(--tinta);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+/* grano de papel */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.35;mix-blend-mode:multiply;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .42  0 0 0 0 .3  0 0 0 .18 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1.1}
+em{font-style:italic}
+a{color:inherit;text-decoration:none}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:22px 5vw;
+ background:linear-gradient(var(--crema),transparent)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bosque)}
+.logo span{color:var(--arcilla)}
+nav ul{display:flex;gap:34px;list-style:none;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase}
+nav a{position:relative;padding-bottom:3px}
+nav a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--arcilla);transition:width .5s}
+nav a:hover::after{width:100%}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:0 5vw;position:relative;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:flota 16s ease-in-out infinite}
+.b1{width:46vw;height:46vw;background:var(--salvia);right:-10vw;top:-12vw}
+.b2{width:30vw;height:30vw;background:var(--miel);opacity:.28;left:-8vw;bottom:-10vw;animation-delay:-6s}
+@keyframes flota{50%{transform:translate(30px,-24px) scale(1.07)}}
+.hero-txt{position:relative;z-index:2;padding-top:60px}
+.kicker{font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:var(--musgo);margin-bottom:26px;display:flex;align-items:center;gap:14px}
+.kicker::before{content:"";width:46px;height:1px;background:var(--musgo)}
+.hero h1{font-size:clamp(3rem,7.2vw,6.6rem);color:var(--bosque);margin-bottom:28px}
+.hero h1 em{color:var(--arcilla)}
+.hero p{max-width:440px;font-size:1.08rem;color:var(--txt);margin-bottom:40px}
+.btn{display:inline-block;padding:15px 38px;border:1px solid var(--bosque);border-radius:60px;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;transition:.45s;background:transparent;color:var(--bosque)}
+.btn:hover{background:var(--bosque);color:var(--crema);letter-spacing:.3em}
+.btn.solid{background:var(--bosque);color:var(--crema);margin-left:12px}
+.btn.solid:hover{background:var(--arcilla);border-color:var(--arcilla)}
+
+/* vela viva */
+.hero-art{position:relative;z-index:2;display:flex;justify-content:center;align-items:flex-end;height:78vh}
+.arco{position:absolute;bottom:0;width:min(34vw,430px);height:92%;box-shadow:0 30px 60px -24px rgba(40,30,20,.35),inset 0 0 0 1px rgba(255,255,255,.45);border-radius:999px 999px 0 0;background:linear-gradient(180deg,var(--arco1),var(--arco2));overflow:hidden}
+.arco::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 62%,rgba(var(--halo),.42),transparent 42%);animation:resp 4s ease-in-out infinite}
+@keyframes resp{50%{opacity:.55}}
+.vela{position:relative;z-index:3;margin-bottom:9%}
+.llama{transform-origin:50% 100%;animation:llama 2.8s ease-in-out infinite}
+@keyframes llama{0%,100%{transform:scale(1,1) rotate(-1deg)}30%{transform:scale(.94,1.06) rotate(1.5deg)}60%{transform:scale(1.03,.96) rotate(-1deg)}}
+.hojas{position:absolute;z-index:4;bottom:6%;left:2%;width:34%}
+.sway{transform-origin:50% 100%;animation:sway 7s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(4deg)}}
+
+/* secciones */
+section{padding:130px 5vw;position:relative}
+.sec-t{text-align:center;margin-bottom:80px}
+.sec-t .kicker{justify-content:center}
+.sec-t .kicker::before{display:none}
+.sec-t h2{font-size:clamp(2.2rem,4.6vw,4rem);color:var(--bosque)}
+.sec-t h2 em{color:var(--arcilla)}
+
+.frase{background:var(--oscuro);color:var(--claro);text-align:center;padding:150px 8vw}
+.frase p{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,3.4rem);font-weight:300;line-height:1.3;max-width:980px;margin:auto}
+.frase em{color:var(--miel)}
+.frase small{display:block;margin-top:34px;font-family:'Jost';font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:var(--salvia)}
+
+.prods{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:42px;max-width:1200px;margin:auto}
+.prod{text-align:center}
+.prod:nth-child(2){margin-top:60px}
+.prod:nth-child(3){margin-top:20px}
+.foto{aspect-ratio:3/4;border-radius:200px 200px 14px 14px;display:flex;align-items:center;justify-content:center;transition:.8s cubic-bezier(.2,.7,.2,1);overflow:hidden;position:relative}
+.prod:hover .foto{border-radius:14px 14px 200px 200px;transform:translateY(-8px)}
+.f1{background:linear-gradient(160deg,var(--f1a),var(--f1b))}
+.f2{background:linear-gradient(160deg,var(--f2a),var(--f2b))}
+.f3{background:linear-gradient(160deg,var(--f3a),var(--f3b))}
+.foto svg{width:82%;transition:.8s;filter:drop-shadow(0 10px 14px rgba(40,30,15,.18))}
+.prod:hover .foto svg{transform:scale(1.08) rotate(-3deg)}
+.prod h3{font-size:1.9rem;margin:26px 0 4px;color:var(--bosque)}
+.prod p{font-size:.95rem;color:var(--txt2);max-width:280px;margin:auto}
+.prod .mas{display:inline-block;margin-top:14px;font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--arcilla);border-bottom:1px solid var(--arcilla)}
+
+/* ingredientes */
+.ingr{background:var(--lino)}
+.ing-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;max-width:900px;margin:auto}
+.ing{padding:14px 30px;border-radius:60px;border:1px solid var(--musgo);color:var(--musgo);font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;transition:.4s}
+.ing:hover{background:var(--musgo);color:var(--crema);transform:translateY(-4px)}
+.ingr .nota{text-align:center;margin:60px auto 0;max-width:560px;color:var(--txt2)}
+
+/* regalo */
+.regalo{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;max-width:1200px;margin:auto}
+.caja{aspect-ratio:1;border-radius:50% 50% 14px 14px;background:radial-gradient(circle at 50% 30%,#F7E3B6,#DDA94B 70%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.caja svg{width:74%;filter:drop-shadow(0 12px 16px rgba(40,30,15,.22))}
+.nieve i{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.8;animation:cae linear infinite}
+@keyframes cae{from{transform:translateY(-20px)}to{transform:translateY(120vh)}}
+.regalo h2{font-size:clamp(2.2rem,4.4vw,3.8rem);color:var(--bosque);margin-bottom:24px}
+.regalo h2 em{color:var(--arcilla)}
+.regalo p{margin-bottom:18px;max-width:470px}
+.regalo ul{list-style:none;margin:26px 0 34px}
+.regalo li{padding:10px 0;border-bottom:1px solid var(--linea);font-family:'Cormorant Garamond',serif;font-size:1.35rem}
+.regalo li span{float:right;font-family:'Jost';font-size:.8rem;letter-spacing:.15em;color:var(--arcilla)}
+
+/* historia */
+.hist{background:var(--oscuro);color:var(--claro);text-align:center}
+.hist h2{font-size:clamp(2rem,4vw,3.4rem);margin-bottom:30px}
+.hist h2 em{color:var(--miel)}
+.hist p{max-width:640px;margin:0 auto 18px;color:var(--histtxt)}
+.firma{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;color:var(--miel);margin-top:30px}
+
+footer{padding:90px 5vw 50px;text-align:center;background:var(--crema)}
+footer h3{font-size:clamp(2rem,4vw,3.2rem);color:var(--bosque);margin-bottom:30px}
+footer h3 em{color:var(--arcilla)}
+.redes{margin-top:50px;display:flex;gap:30px;justify-content:center;font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--musgo)}
+.pie{margin-top:50px;font-size:.72rem;letter-spacing:.2em;color:#9b8f78}
+
+.rev{opacity:0;transform:translateY(40px);transition:1.1s cubic-bezier(.2,.7,.2,1)}
+.rev.on{opacity:1;transform:none}
+/* menu celular */
+.burger{display:none;background:none;border:0;width:34px;height:22px;position:relative;cursor:pointer;z-index:30}
+.burger i{position:absolute;left:0;right:0;height:1.5px;background:var(--bosque);transition:.4s}
+.burger i:nth-child(1){top:3px}.burger i:nth-child(2){top:10px}.burger i:nth-child(3){top:17px}
+.abierto .burger i:nth-child(1){top:10px;transform:rotate(45deg)}
+.abierto .burger i:nth-child(2){opacity:0}
+.abierto .burger i:nth-child(3){top:10px;transform:rotate(-45deg)}
+img,svg{max-width:100%}
+.hero h1{font-size:clamp(2.6rem,9vw,6.6rem)}
+
+/* TABLET */
+@media(max-width:1024px){
+  section{padding:100px 6vw}
+  .hero{gap:20px}
+  .arco{width:min(40vw,380px)}
+  .regalo{gap:5vw}
+  nav ul{gap:22px}
+}
+/* CELULAR */
+@media(max-width:860px){
+  nav{padding:16px 6vw;background:var(--crema)}
+  .burger{display:block}
+  nav ul{position:fixed;inset:0;background:var(--crema);flex-direction:column;justify-content:center;align-items:center;gap:30px;font-size:1rem;
+    opacity:0;pointer-events:none;transition:.5s;z-index:25}
+  .abierto nav ul{opacity:1;pointer-events:auto}
+  .hero{grid-template-columns:1fr;padding:100px 6vw 40px;min-height:auto;text-align:center}
+  .hero-txt{padding-top:0}
+  .kicker{justify-content:center}
+  .kicker::before{display:none}
+  .hero p{margin-left:auto;margin-right:auto}
+  .hero-art{height:56vh;margin-top:20px}
+  .arco{width:min(72vw,340px)}
+  .b1{width:90vw;height:90vw}.b2{width:70vw;height:70vw}
+  section{padding:80px 6vw}
+  .sec-t{margin-bottom:50px}
+  .frase{padding:90px 7vw}
+  .regalo{grid-template-columns:1fr;text-align:center}
+  .regalo p{margin-left:auto;margin-right:auto}
+  .regalo li span{display:block;float:none;font-size:.7rem}
+  .caja{max-width:360px;margin:0 auto 20px}
+  .prod:nth-child(n){margin-top:0}
+  .prod .foto{max-width:320px;margin:auto}
+  .btn{padding:14px 30px}
+  .btn.solid{margin:14px 0 0}
+  .redes{flex-wrap:wrap;gap:18px}
+}
+@media(max-width:380px){.hero h1{font-size:2.4rem}.btn{display:block;margin:0 auto}.btn.solid{margin-top:12px}}
+@media(hover:none){.prod:hover .foto{border-radius:200px 200px 14px 14px;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rev{opacity:1;transform:none}}
+@media(max-width:860px){
+  .hero{display:block;min-height:100svh;padding:96px 6vw 40px;text-align:left;position:relative}
+  .hero-txt{position:relative;z-index:3;width:52%;padding-top:10px}
+  .hero-txt .kicker{justify-content:flex-start;font-size:.62rem;letter-spacing:.22em;margin-bottom:18px}
+  .hero-txt .kicker::before{display:none}
+  .hero h1{font-size:clamp(1.7rem,7.6vw,2.8rem);margin-bottom:18px}
+  .hero p{font-size:.86rem;line-height:1.6;margin:0 0 24px;max-width:none}
+  .hero .btn,.hero .btn.solid{display:block;margin:0 0 12px;text-align:center;padding:12px 6px;font-size:.6rem;letter-spacing:.1em;white-space:nowrap}
+  .hero-art{position:absolute;right:5vw;top:96px;width:34vw;height:min(560px,calc(100svh - 130px));display:flex;justify-content:center;align-items:flex-end;margin:0;z-index:2}
+  .arco{width:100%;height:100%}
+  .hero-art .vela{width:84%;height:auto;margin-bottom:12%}
+  .hojas{width:40%;left:-6%;bottom:4%}
+}
+html[data-paleta="2"]{--crema:#F5F1F7;--lino:#E7DFEE;--salvia:#BBB0CE;--musgo:#6B5B8A;--bosque:#2E2742;--arcilla:#B2688A;--miel:#E0B66A;--tinta:#3A3347;--oscuro:#2E2742;--claro:#F5F1F7;--txt:#5a5170;--txt2:#6a617d;--linea:#d6cce2;--hojaA:#6B5B8A;--hojaB:#8A7BA8;--hojaC:#A99BC2;--f1a:#E3DCEE;--f1b:#BFB2D6;--f2a:#F3E2BC;--f2b:#E0B66A;--f3a:#F0D2DE;--f3b:#CF8FAB;--arco1:#DDD2EA;--arco2:#B8A8D0;--halo:224,182,106;--histtxt:#d9d1e4}
+html[data-paleta="3"]{--crema:#FBF2E1;--lino:#F1E0BE;--salvia:#CDB683;--musgo:#8A6A2F;--bosque:#3B2416;--arcilla:#A8432E;--miel:#E3A937;--tinta:#3A2A1C;--oscuro:#3B2416;--claro:#FBF2E1;--txt:#6a5238;--txt2:#7a5f42;--linea:#e2cfa5;--hojaA:#6E7B3F;--hojaB:#8A9650;--hojaC:#A3AE6A;--f1a:#F1E0BE;--f1b:#DDBE80;--f2a:#F7D58F;--f2b:#E3A937;--f3a:#EBBFA8;--f3b:#C9694F;--arco1:#EECF98;--arco2:#D9A95A;--halo:240,180,60;--histtxt:#e8d9bd}
+html[data-paleta="4"]{--crema:#F9EFEA;--lino:#F0DDD3;--salvia:#DDB9A8;--musgo:#8C5A48;--bosque:#3D2A26;--arcilla:#C26A55;--miel:#E2A760;--tinta:#43302B;--oscuro:#3D2A26;--claro:#F9EFEA;--txt:#6e5249;--txt2:#7d6057;--linea:#e6cfc3;--hojaA:#7C8C66;--hojaB:#98A682;--hojaC:#B2BE9E;--f1a:#EBD3C7;--f1b:#D6A996;--f2a:#F4D9B6;--f2b:#E2A760;--f3a:#F0C8BC;--f3b:#C26A55;--arco1:#EDCDBF;--arco2:#D49C88;--halo:226,167,96;--histtxt:#e6d3c9}
+html[data-paleta="5"]{--crema:#1C241A;--lino:#262F24;--salvia:#5E6E4B;--musgo:#A9B393;--bosque:#F1E9D8;--arcilla:#E0976F;--miel:#E8B955;--tinta:#E6DECB;--oscuro:#121810;--claro:#F1E9D8;--txt:#BDB7A3;--txt2:#AEA892;--linea:#394535;--hojaA:#7C8C66;--hojaB:#94A37D;--hojaC:#A9B393;--f1a:#33402F;--f1b:#4A5A41;--f2a:#4A3C1E;--f2b:#7A5F26;--f3a:#4A3128;--f3b:#7A4E3A;--arco1:#2B3628;--arco2:#34402F;--halo:232,185,85;--histtxt:#c9c3ae}
+html[data-paleta="5"] body::before{opacity:.12}
+html[data-paleta="5"] .btn.solid,html[data-paleta="5"] .btn:hover{color:#1C241A}
+body,.frase,.hist,.ingr,nav,.foto,.arco{transition:background-color .6s,color .6s}
+.pal[hidden]{display:none}.pal{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'Jost',sans-serif}
+.pal-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:40px;border:1px solid var(--musgo);background:var(--crema);color:var(--bosque);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.pal-list{display:none;margin-bottom:10px;background:var(--crema);border:1px solid var(--linea);border-radius:18px;padding:10px;box-shadow:0 10px 34px rgba(0,0,0,.18);min-width:250px}
+.pal.on .pal-list{display:block}
+.pal-list button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border:0;background:none;border-radius:12px;cursor:pointer;color:var(--tinta);font-family:inherit;font-size:.9rem;text-align:left}
+.pal-list button:hover,.pal-list button.sel{background:var(--lino)}
+.pal-list b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--bosque);color:var(--crema);font-size:.75rem;font-weight:500;flex:none}
+.pal-list span.sw{display:flex;margin-left:auto}
+.pal-list span.sw i{width:14px;height:14px;border-radius:50%;margin-left:-4px;border:1px solid rgba(0,0,0,.12)}
+/* V3: arco corto en celular (llega hasta la 3.a fila del titulo) */
+@media(max-width:860px){
+  .hero{min-height:auto;padding:96px 6vw 56px}
+  .hero-txt{width:100%;padding-top:0}
+  .hero-txt .kicker,.hero h1{width:54%}
+  .hero h1{margin-bottom:26px}
+  .hero p{font-size:.95rem;line-height:1.65;margin:0 0 26px;max-width:none}
+  .hero .btn,.hero .btn.solid{display:inline-block;width:calc(50% - 6px);margin:0;font-size:.62rem;letter-spacing:.12em}
+  .hero .btn.solid{margin-left:8px}
+  .hero-art{width:36vw;height:190px;top:106px;right:6vw}
+  .hero-art .vela{width:62%;margin-bottom:10%}
+  .hojas{width:38%;left:-14%;bottom:2%}
+  .arco{height:100%}
+}
+/* V4: termino medio - arco hasta el final del parrafo, portada llena la pantalla */
+@media(max-width:860px){
+  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;padding:150px 6vw 40px}
+  .hero-txt .kicker,.hero h1,.hero p{width:54%}
+  .hero p{font-size:.9rem;margin-bottom:34px}
+  .hero .btn,.hero .btn.solid{padding:15px 6px}
+  .hero-art .vela{width:70%;margin-bottom:8%}
+}
+.cue{display:none}
+@media(max-width:860px){
+  .cue{display:none;margin-top:auto;padding-top:30px;text-align:center}
+  .chips{display:flex;justify-content:center;gap:10px;margin-bottom:22px}
+  .chips span{padding:8px 16px;border:1px solid var(--musgo);border-radius:40px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--musgo)}
+  .cue a{display:inline-flex;flex-direction:column;align-items:center;gap:8px;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--musgo)}
+  .cue a i{width:1px;height:36px;background:var(--musgo);animation:baja 2s ease-in-out infinite;transform-origin:top}
+}
+@keyframes baja{0%{transform:scaleY(0)}60%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+@media(max-width:860px){.hero p{margin-bottom:clamp(70px,17svh,150px)}}
+/* V6: composicion centrada, estilo editorial (celular) */
+@media(max-width:860px){
+  .hero{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100svh;padding:84px 8vw calc(104px + env(safe-area-inset-bottom));justify-content:space-between}
+  .hero-txt{display:contents}
+  .hero-txt .kicker{order:1;width:100%;justify-content:center;font-size:.64rem;letter-spacing:.32em;margin:0}
+  .hero-art{order:2;position:relative!important;top:auto!important;right:auto!important;width:min(58vw,250px)!important;height:clamp(210px,37svh,330px)!important;margin:4px 0 0}
+  .hero-art::before{content:"";position:absolute;inset:-9px -9px 0 -9px;border:1px solid var(--musgo);border-bottom:0;border-radius:999px 999px 0 0;opacity:.45;z-index:1}
+  .hero-art .arco{z-index:2}
+  .hero-art .vela{width:64%;margin-bottom:9%}
+  .hojas{width:42%;left:-20%;bottom:0}
+  .hero h1{order:3;width:100%;font-size:clamp(2.2rem,10.5vw,3.3rem);line-height:1.04;margin:2px 0 0}
+  .hero p{order:4;width:88%;max-width:340px;font-size:.92rem;line-height:1.6;margin:0}
+  .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .hero .btn,.hero .btn.solid{width:auto;display:inline-block;margin:0;padding:13px 26px;font-size:.62rem;letter-spacing:.2em}
+  .hero .btn.solid{margin-left:0}
+  .hero-btns{order:5}
+}
+/* V7: estilo editorial en toda la pagina + ajuste de botones (modo app) */
+.foto,.caja{box-shadow:0 0 0 8px var(--crema),0 0 0 9px color-mix(in srgb,var(--musgo) 45%,transparent)}
+.ingr .foto,.ingr .caja{box-shadow:0 0 0 8px var(--lino),0 0 0 9px color-mix(in srgb,var(--musgo) 45%,transparent)}
+.pal{bottom:calc(14px + env(safe-area-inset-bottom))}
+@media(max-width:860px){
+  nav{padding-top:calc(16px + env(safe-area-inset-top))}
+  section{padding:84px 9vw}
+  .sec-t{margin-bottom:56px}
+  .sec-t .kicker{flex-direction:column;gap:16px;font-size:.64rem;letter-spacing:.32em}
+  .sec-t .kicker::before{display:block;width:1px;height:38px;background:var(--musgo);opacity:.6}
+  .sec-t h2,.regalo h2,.hist h2,footer h3{line-height:1.08}
+  .prods{gap:70px}
+  .prod .foto{aspect-ratio:4/5;max-width:300px;margin:0 auto}
+  .prod h3{margin-top:34px}
+  .prod p{font-size:.95rem}
+  .regalo .kicker{justify-content:center}
+  .regalo .kicker::before{display:none}
+  .caja{max-width:300px;aspect-ratio:4/5;border-radius:999px 999px 14px 14px;margin:0 auto 54px}
+  .regalo ul{max-width:340px;margin:26px auto 34px}
+  .ing-grid{gap:12px}
+  .ing{font-size:1.2rem;padding:11px 22px}
+  .frase p{font-size:clamp(1.7rem,7vw,2.4rem)}
+  .hist .kicker::before{display:none}
+  footer{padding:80px 9vw calc(110px + env(safe-area-inset-bottom))}
+}
+html[data-paleta="6"]{--crema:#FBF6EC;--lino:#F1E6D2;--salvia:#9DB59A;--musgo:#1F5A3C;--bosque:#12392A;--arcilla:#B3262E;--miel:#D9A93B;--tinta:#33281F;--oscuro:#12392A;--claro:#FBF6EC;--txt:#5a4a3d;--txt2:#6a5a4c;--linea:#e3d4b8;--hojaA:#1F5A3C;--hojaB:#2E7650;--hojaC:#4A946A;--f1a:#DCE8D6;--f1b:#A6C4A0;--f2a:#F6E0A8;--f2b:#D9A93B;--f3a:#F0C2C0;--f3b:#B3262E;--arco1:#CFE0CB;--arco2:#86AB89;--halo:244,190,70;--histtxt:#e6e0cc}
+.copos{display:none;position:fixed;inset:0;pointer-events:none;z-index:45;overflow:hidden}
+html[data-paleta="6"] .copos{display:block}
+.copos i{position:absolute;top:-20px;border-radius:50%;background:#fff;box-shadow:0 0 6px rgba(255,255,255,.9);opacity:.85;animation:cae linear infinite}
+html[data-paleta="6"] .hero .blob.b2{background:var(--arcilla);opacity:.18}
+.sin-anim nav ul{transition:none!important}
+.abierto{overflow:hidden}
+/* catalogo de productos */
+.cat-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:-30px 0 44px}
+.cat-chips button{padding:9px 20px;border-radius:40px;border:1px solid var(--musgo);background:transparent;color:var(--musgo);font:inherit;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.cat-chips button.on{background:var(--musgo);color:var(--crema)}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:52px 30px;max-width:1100px;margin:auto}
+.pc{text-align:center;cursor:pointer}
+.pc .ph{aspect-ratio:4/5;border-radius:999px 999px 14px 14px;overflow:hidden;position:relative;background:linear-gradient(160deg,var(--f1a),var(--f1b));box-shadow:0 0 0 7px var(--crema),0 0 0 8px color-mix(in srgb,var(--musgo) 45%,transparent);display:flex;align-items:center;justify-content:center;color:var(--musgo);transition:transform .6s}
+.pc .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.pc:hover .ph{transform:translateY(-6px)}
+.pc .ag{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:var(--bosque);color:var(--crema);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;padding:5px 14px;border-radius:30px}
+.pc h3{font-size:1.55rem;margin:28px 0 2px;color:var(--bosque)}
+.pc .pr{color:color-mix(in srgb,var(--arcilla) 66%,#000);letter-spacing:.06em;font-size:1rem;font-weight:500}
+html[data-paleta="5"] .pc .pr{color:var(--arcilla)}
+.pc .go{display:inline-block;margin-top:12px;padding:10px 22px;border:1px solid var(--bosque);border-radius:40px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bosque);transition:.4s}
+.pc .go:hover{background:var(--bosque);color:var(--crema)}
+.lb{position:fixed;inset:0;z-index:70;background:rgba(20,26,18,.8);display:none;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.lb.on{display:flex}
+body.lbabierto{overflow:hidden}
+.lb-card{background:var(--crema);width:min(520px,100%);max-height:94svh;overflow:auto;border-radius:26px 26px 0 0;position:relative;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.lb-fotos{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--lino)}
+.lb-fotos::-webkit-scrollbar{display:none}
+.lb-fotos>*{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/5;object-fit:cover;display:flex;align-items:center;justify-content:center;color:var(--musgo)}
+.lb-pts{display:flex;justify-content:center;gap:7px;margin:12px 0 0}
+.lb-pts i{width:7px;height:7px;border-radius:50%;background:var(--linea)}
+.lb-pts i.on{background:var(--arcilla)}
+.lb-txt{padding:12px 26px 0;text-align:center}
+.lb-txt h3{font-size:2rem;color:var(--bosque);margin-bottom:4px}
+.lb-txt .pr{color:var(--arcilla);font-size:1.15rem;margin-bottom:12px}
+.lb-txt p{color:var(--txt);margin-bottom:20px;white-space:pre-line}
+.lb-x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#2B3626;font-size:1.4rem;cursor:pointer;z-index:2;line-height:1}
+@media(min-width:861px){.lb{align-items:center}.lb-card{border-radius:26px}}
+/* Paleta 5 (oscura): se baja un poco el brillo de las fotos de la ficha para que un fondo blanco no encandile */
+html[data-paleta="5"] .lb-fotos img{filter:brightness(.9) saturate(1.03)}
+@media(max-width:860px){.cat-grid{grid-template-columns:1fr 1fr;gap:44px 24px}.pc h3{font-size:1.2rem;margin-top:24px}.pc .go{padding:9px 14px;font-size:.6rem;letter-spacing:.1em}.pc .ph{box-shadow:0 0 0 5px var(--crema),0 0 0 6px color-mix(in srgb,var(--musgo) 45%,transparent)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">Tierra <span>Eden</span></a>
+  <ul>
+    <li><a href="#catalogo" data-cat="jabones" data-menu="1" data-t="menu_1">Jabones</a></li>
+    <li><a href="#catalogo" data-cat="velas" data-menu="1" data-t="menu_5">Velas</a></li>
+    <li><a href="#catalogo" data-cat="todos" data-menu="1" data-t="menu_6">Ver todo</a></li>
+    <li><a href="#tierra" data-t="menu_2">Ingredientes</a></li>
+    <li><a href="#regalo" data-t="menu_3">Para regalar</a></li>
+    <li><a href="#historia" data-t="menu_4">Nosotros</a></li>
+  </ul>
+  <button class="burger" aria-label="Menú" onclick="document.body.classList.toggle('abierto')"><i></i><i></i><i></i></button>
+</nav>
+
+<header class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="hero-txt">
+    <div class="kicker" data-t="hero_kicker">Hecho a mano · Naturaleza viva</div>
+    <h1 data-t="hero_titulo" data-r="rico">Lo que nace<br>de la <em>tierra</em><br>vuelve a ti.</h1>
+    <p data-t="hero_parrafo">Jabones y velas artesanales elaborados con ingredientes naturales, en pequeños lotes y con mucha calma. Para cuidar tu piel, tu hogar y el planeta.</p>
+    <div class="hero-btns"><a class="btn" href="#productos" data-t="hero_btn1">Descubrir</a><a class="btn solid" href="#regalo" data-t="hero_btn2">Regalar Eden</a></div>
+  </div>
+  <div class="hero-art">
+    <div class="arco"></div>
+    <svg class="hojas sway" viewBox="0 0 120 200" fill="none">
+      <path d="M60 200 C58 130 62 70 60 10" style="stroke:var(--hojaA)" stroke-width="2.5"/>
+      <g style="fill:var(--hojaB)"><path d="M60 150 C20 140 10 110 12 90 C45 95 60 120 60 150Z"/><path d="M60 120 C100 112 112 84 108 62 C75 68 60 92 60 120Z"/><path d="M60 80 C28 70 22 46 26 30 C50 36 60 56 60 80Z"/><path d="M60 50 C86 44 94 24 92 10 C72 14 60 30 60 50Z" style="fill:var(--hojaC)"/></g>
+    </svg>
+    <svg class="vela" width="200" height="300" viewBox="0 0 200 300">
+      <defs>
+        <radialGradient id="halo"><stop offset="0" stop-color="#FFD98A" stop-opacity=".9"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient>
+        <linearGradient id="cera" x1="0" x2="1"><stop offset="0" stop-color="#EFE4CD"/><stop offset=".5" stop-color="#FBF5E8"/><stop offset="1" stop-color="#E3D4B6"/></linearGradient>
+      </defs>
+      <circle cx="100" cy="70" r="90" fill="url(#halo)"/>
+      <g class="llama"><path d="M100 24 C122 56 126 82 100 98 C74 82 78 56 100 24Z" fill="#F7A93B"/><path d="M100 54 C112 72 112 86 100 94 C88 86 88 72 100 54Z" fill="#FFE39A"/></g>
+      <rect x="98" y="96" width="4" height="22" rx="2" fill="#3A3329"/>
+      <path d="M48 118 H152 V270 Q100 286 48 270Z" fill="url(#cera)"/>
+      <ellipse cx="100" cy="118" rx="52" ry="9" fill="#F4EAD2"/>
+      <rect x="70" y="170" width="60" height="62" rx="3" style="fill:var(--hojaA)" opacity=".92"/>
+      <text x="100" y="196" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="12" fill="#F5EEE2" letter-spacing="2">TIERRA</text>
+      <text x="100" y="214" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="12" fill="#DDA94B" letter-spacing="3">EDEN</text>
+    </svg>
+  </div>
+</header>
+
+<div class="frase rev">
+  <p data-t="frase_texto" data-r="rico">No fabricamos productos.<br>Preparamos pequeños <em>rituales</em> para que te detengas, respires y vuelvas a lo simple.</p>
+  <small data-t="frase_firma">— Tierra Eden</small>
+</div>
+
+<section id="productos">
+  <div class="sec-t rev"><div class="kicker" data-t="col_kicker">La colección</div><h2 data-t="col_titulo" data-r="rico">Tres maneras de <em>sentir</em> la tierra</h2></div>
+  <div class="prods">
+    <article class="prod rev">
+      <div class="foto f1">
+        <svg viewBox="0 0 200 200" fill="none">
+<defs>
+<linearGradient id="sj1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF4E2"/><stop offset="1" stop-color="#E2D2AC"/></linearGradient>
+<linearGradient id="sj2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#CBD3AB"/><stop offset="1" stop-color="#8D9A69"/></linearGradient>
+<linearGradient id="sjk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9A877"/><stop offset=".5" stop-color="#DABB8C"/><stop offset="1" stop-color="#BD9A68"/></linearGradient>
+<filter id="sjg" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".95" numOctaves="2" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .45  0 0 0 0 .36  0 0 0 0 .22  0 0 0 .5 -.14" result="t"/><feComposite in="t" in2="SourceGraphic" operator="in"/></filter>
+<filter id="sjs" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<ellipse cx="102" cy="174" rx="80" ry="10" fill="#2a2013" opacity=".28" filter="url(#sjs)"/>
+<g transform="rotate(8 112 96)"><rect x="56" y="44" width="122" height="84" rx="20" fill="url(#sj2)"/><rect x="56" y="44" width="122" height="84" rx="20" filter="url(#sjg)"/><path d="M68 62 Q76 51 102 50" stroke="#fff" stroke-opacity=".4" stroke-width="3.5" stroke-linecap="round"/></g>
+<g transform="rotate(-9 92 116)">
+<rect x="28" y="72" width="136" height="90" rx="22" fill="url(#sj1)"/>
+<rect x="28" y="72" width="136" height="90" rx="22" filter="url(#sjg)"/>
+<path d="M42 94 Q48 79 78 77" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+<rect x="28" y="152" width="136" height="10" rx="5" fill="#C9B07E" opacity=".35"/>
+<g fill="#B88F55" opacity=".75"><ellipse cx="50" cy="118" rx="2.6" ry="1.4" transform="rotate(30 50 118)"/><ellipse cx="62" cy="136" rx="2.4" ry="1.3"/><ellipse cx="128" cy="100" rx="2.6" ry="1.4" transform="rotate(-25 128 100)"/><ellipse cx="146" cy="128" rx="2.4" ry="1.3"/><ellipse cx="136" cy="146" rx="2.2" ry="1.2"/><ellipse cx="44" cy="146" rx="2.2" ry="1.2" transform="rotate(50 44 146)"/><ellipse cx="150" cy="96" rx="2" ry="1.1"/></g>
+<rect x="76" y="68" width="42" height="98" fill="url(#sjk)"/>
+<rect x="76" y="68" width="42" height="98" filter="url(#sjg)" opacity=".6"/>
+<path d="M76 68V166M118 68V166" stroke="#8d6d42" stroke-opacity=".35" stroke-width="1"/>
+<text x="97" y="117" text-anchor="middle" transform="rotate(-90 97 117)" font-family="Cormorant Garamond,serif" font-size="10" letter-spacing="2.4" fill="#4a3a22">TIERRA EDEN</text>
+</g>
+<g transform="translate(10 118) rotate(-14)"><path d="M12 62 C16 40 20 20 30 4" stroke="#6E7B3F" stroke-width="2" stroke-linecap="round"/><g style="fill:var(--hojaB)"><ellipse cx="22" cy="40" rx="8" ry="3.4" transform="rotate(-50 22 40)"/><ellipse cx="30" cy="38" rx="8" ry="3.4" transform="rotate(30 30 38)"/><ellipse cx="20" cy="26" rx="7" ry="3" transform="rotate(-55 20 26)"/><ellipse cx="29" cy="24" rx="7" ry="3" transform="rotate(35 29 24)"/><ellipse cx="26" cy="12" rx="6" ry="2.6" transform="rotate(-50 26 12)"/><ellipse cx="32" cy="10" rx="6" ry="2.6" transform="rotate(40 32 10)"/></g></g>
+</svg>
+      </div>
+      <h3 data-t="prod1_nombre">Jabones</h3><p data-t="prod1_desc">Aceites vegetales, arcillas y hierbas. Espuma suave, aroma sutil, piel agradecida.</p><a class="mas" href="#catalogo" data-cat="jabones" data-t="prod1_enlace">Ver jabones</a>
+    </article>
+    <article class="prod rev">
+      <div class="foto f2">
+        <svg viewBox="0 0 200 250" fill="none">
+<defs>
+<linearGradient id="vg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".25" stop-color="#fff" stop-opacity=".12"/><stop offset=".8" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity=".4"/></linearGradient>
+<linearGradient id="vc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F0E1BC"/><stop offset=".45" stop-color="#FFF7E3"/><stop offset="1" stop-color="#E9D6AB"/></linearGradient>
+<linearGradient id="vk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C7A573"/><stop offset=".5" stop-color="#DCBE8F"/><stop offset="1" stop-color="#BC9966"/></linearGradient>
+<radialGradient id="vh"><stop offset="0" stop-color="#FFD98A" stop-opacity=".85"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient>
+<filter id="vs" x="-20%" y="-80%" width="140%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<ellipse cx="100" cy="230" rx="62" ry="9" fill="#2a2013" opacity=".3" filter="url(#vs)"/>
+<circle cx="100" cy="66" r="62" fill="url(#vh)"/>
+<rect x="52" y="96" width="96" height="130" rx="16" fill="#fff" fill-opacity=".14" stroke="#fff" stroke-opacity=".7" stroke-width="1.5"/>
+<rect x="58" y="110" width="84" height="110" rx="11" fill="url(#vc)"/>
+<ellipse cx="100" cy="110" rx="42" ry="6.5" fill="#FFF9E9"/>
+<ellipse cx="100" cy="111" rx="13" ry="2.8" fill="#EBD9AE"/>
+<rect x="98" y="94" width="4" height="18" rx="1.5" fill="#3a3329"/>
+<rect x="52" y="96" width="96" height="130" rx="16" fill="url(#vg)"/>
+<rect x="60" y="106" width="6" height="104" rx="3" fill="#fff" opacity=".55"/>
+<rect x="68" y="146" width="64" height="52" rx="3" fill="url(#vk)"/>
+<path d="M68 146H132M68 198H132" stroke="#8d6d42" stroke-opacity=".3"/>
+<path d="M100 156c-6 4-8 10-4 15 5-2 8-9 4-15Z" style="fill:var(--hojaA)"/>
+<text x="100" y="183" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="11" letter-spacing="2.6" fill="#4a3a22">TIERRA</text>
+<text x="100" y="194" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3.4" fill="#7a5a2c">EDEN</text>
+<g style="transform-box:fill-box;transform-origin:50% 100%;animation:llama 2.8s ease-in-out infinite"><path d="M100 46c11 14 13 30 0 42-13-12-11-28 0-42Z" fill="#F7A93B"/><path d="M100 62c6 9 7 18 0 25-7-7-6-16 0-25Z" fill="#FFE8A8"/></g>
+</svg>
+      </div>
+      <h3 data-t="prod2_nombre">Velas</h3><p data-t="prod2_desc">Cera natural y mecha de algodón. Una luz cálida que convierte cualquier rincón en refugio.</p><a class="mas" href="#catalogo" data-cat="velas" data-t="prod2_enlace">Ver velas</a>
+    </article>
+    <article class="prod rev">
+      <div class="foto f3">
+        <svg viewBox="0 0 200 210" fill="none">
+<defs>
+<linearGradient id="gk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C4A072"/><stop offset=".5" stop-color="#D9B98B"/><stop offset="1" stop-color="#B8935F"/></linearGradient>
+<linearGradient id="gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CFAE80"/><stop offset=".5" stop-color="#E3C79B"/><stop offset="1" stop-color="#C19C69"/></linearGradient>
+<filter id="gs" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="gg" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="9" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .18  0 0 0 .4 -.1" result="t"/><feComposite in="t" in2="SourceGraphic" operator="in"/></filter>
+</defs>
+<ellipse cx="100" cy="190" rx="76" ry="9" fill="#2a2013" opacity=".3" filter="url(#gs)"/>
+<rect x="38" y="104" width="124" height="82" rx="4" fill="url(#gk)"/><rect x="38" y="104" width="124" height="82" rx="4" filter="url(#gg)"/>
+<rect x="30" y="80" width="140" height="30" rx="4" fill="url(#gl)"/><rect x="30" y="80" width="140" height="30" rx="4" filter="url(#gg)"/>
+<rect x="30" y="104" width="140" height="7" fill="#000" opacity=".12"/>
+<rect x="92" y="80" width="16" height="106" style="fill:var(--arcilla)"/>
+<rect x="92" y="80" width="5" height="106" fill="#fff" opacity=".18"/>
+<path d="M100 80C82 52 56 56 66 74 72 84 92 82 100 80Z" style="fill:var(--arcilla)"/>
+<path d="M100 80C118 52 144 56 134 74 128 84 108 82 100 80Z" style="fill:var(--arcilla)"/>
+<path d="M100 80C86 62 70 62 72 72" stroke="#000" stroke-opacity=".18" stroke-width="2"/><path d="M100 80C114 62 130 62 128 72" stroke="#000" stroke-opacity=".18" stroke-width="2"/>
+<ellipse cx="100" cy="80" rx="9" ry="8" style="fill:var(--arcilla)"/><ellipse cx="98" cy="78" rx="4" ry="3" fill="#fff" opacity=".25"/>
+<path d="M104 86 C118 108 130 114 136 130" stroke="#8d6d42" stroke-width="1.4"/>
+<g transform="rotate(12 138 144)"><rect x="124" y="128" width="30" height="40" rx="3" fill="#F7EEDA"/><circle cx="139" cy="134" r="2.2" fill="#B88F55"/><text x="139" y="152" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="10" fill="#5a4630">Para ti</text></g>
+<g transform="translate(40 52)"><path d="M6 32C10 22 14 12 22 2" stroke="#6E7B3F" stroke-width="1.8" stroke-linecap="round"/><g style="fill:var(--hojaB)"><ellipse cx="14" cy="22" rx="6" ry="2.6" transform="rotate(-50 14 22)"/><ellipse cx="20" cy="18" rx="6" ry="2.6" transform="rotate(35 20 18)"/><ellipse cx="15" cy="10" rx="5" ry="2.2" transform="rotate(-50 15 10)"/><ellipse cx="22" cy="7" rx="5" ry="2.2" transform="rotate(35 22 7)"/></g></g>
+</svg>
+      </div>
+      <h3 data-t="prod3_nombre">Cajas de regalo</h3><p data-t="prod3_desc">Jabón y vela, juntos y envueltos con cariño. El detalle que sí se recuerda.</p><a class="mas" href="#regalo" data-t="prod3_enlace">Armar mi regalo</a>
+    </article>
+  </div>
+</section>
+
+<section class="cat" id="catalogo" hidden>
+  <div class="sec-t rev"><div class="kicker" data-t="cat_kicker">Nuestros productos</div><h2 data-t="cat_titulo" data-r="rico">Hechos <em>a mano</em>, listos para ti</h2></div>
+  <div class="cat-chips" id="catChips"></div>
+  <div class="cat-grid" id="catGrid"></div>
+</section>
+
+<section class="ingr" id="tierra">
+  <div class="sec-t rev"><div class="kicker" data-t="ingr_kicker">Lo que hay adentro</div><h2 data-t="ingr_titulo" data-r="rico">Solo lo que la <em>tierra</em> ya sabe hacer</h2></div>
+  <div class="ing-grid rev" data-t="ingr_lista" data-r="chips">
+    <span class="ing">Lavanda</span><span class="ing">Aceite de oliva</span><span class="ing">Miel</span><span class="ing">Avena</span><span class="ing">Romero</span><span class="ing">Cera de soya</span><span class="ing">Arcilla verde</span><span class="ing">Manteca de karité</span><span class="ing">Naranja &amp; canela</span>
+  </div>
+  <p class="nota rev" data-t="ingr_nota">Sin colorantes sintéticos, sin plásticos innecesarios, sin apuros. Cada lote se elabora a mano y se deja reposar el tiempo que necesita.</p>
+</section>
+
+<section id="regalo">
+  <div class="regalo">
+    <div class="caja rev">
+      <div class="nieve" id="nieve"></div>
+      <svg viewBox="0 0 200 210" fill="none">
+<defs>
+<linearGradient id="gk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C4A072"/><stop offset=".5" stop-color="#D9B98B"/><stop offset="1" stop-color="#B8935F"/></linearGradient>
+<linearGradient id="gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CFAE80"/><stop offset=".5" stop-color="#E3C79B"/><stop offset="1" stop-color="#C19C69"/></linearGradient>
+<filter id="gs" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="gg" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="9" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .18  0 0 0 .4 -.1" result="t"/><feComposite in="t" in2="SourceGraphic" operator="in"/></filter>
+</defs>
+<ellipse cx="100" cy="190" rx="76" ry="9" fill="#2a2013" opacity=".3" filter="url(#gs)"/>
+<rect x="38" y="104" width="124" height="82" rx="4" fill="url(#gk)"/><rect x="38" y="104" width="124" height="82" rx="4" filter="url(#gg)"/>
+<rect x="30" y="80" width="140" height="30" rx="4" fill="url(#gl)"/><rect x="30" y="80" width="140" height="30" rx="4" filter="url(#gg)"/>
+<rect x="30" y="104" width="140" height="7" fill="#000" opacity=".12"/>
+<rect x="92" y="80" width="16" height="106" style="fill:var(--arcilla)"/>
+<rect x="92" y="80" width="5" height="106" fill="#fff" opacity=".18"/>
+<path d="M100 80C82 52 56 56 66 74 72 84 92 82 100 80Z" style="fill:var(--arcilla)"/>
+<path d="M100 80C118 52 144 56 134 74 128 84 108 82 100 80Z" style="fill:var(--arcilla)"/>
+<path d="M100 80C86 62 70 62 72 72" stroke="#000" stroke-opacity=".18" stroke-width="2"/><path d="M100 80C114 62 130 62 128 72" stroke="#000" stroke-opacity=".18" stroke-width="2"/>
+<ellipse cx="100" cy="80" rx="9" ry="8" style="fill:var(--arcilla)"/><ellipse cx="98" cy="78" rx="4" ry="3" fill="#fff" opacity=".25"/>
+<path d="M104 86 C118 108 130 114 136 130" stroke="#8d6d42" stroke-width="1.4"/>
+<g transform="rotate(12 138 144)"><rect x="124" y="128" width="30" height="40" rx="3" fill="#F7EEDA"/><circle cx="139" cy="134" r="2.2" fill="#B88F55"/><text x="139" y="152" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="10" fill="#5a4630">Para ti</text></g>
+<g transform="translate(40 52)"><path d="M6 32C10 22 14 12 22 2" stroke="#6E7B3F" stroke-width="1.8" stroke-linecap="round"/><g style="fill:var(--hojaB)"><ellipse cx="14" cy="22" rx="6" ry="2.6" transform="rotate(-50 14 22)"/><ellipse cx="20" cy="18" rx="6" ry="2.6" transform="rotate(35 20 18)"/><ellipse cx="15" cy="10" rx="5" ry="2.2" transform="rotate(-50 15 10)"/><ellipse cx="22" cy="7" rx="5" ry="2.2" transform="rotate(35 22 7)"/></g></g>
+</svg>
+    </div>
+    <div class="rev">
+      <div class="kicker" data-t="reg_kicker">Navidad en Tierra Eden</div>
+      <h2 data-t="reg_titulo" data-r="rico">El regalo que <em>huele</em> a hogar</h2>
+      <p data-t="reg_parrafo">Esta Navidad regala algo hecho con las manos, con tiempo y con intención. Algo que no se guarda en un cajón: se enciende, se usa, se disfruta.</p>
+      <ul data-t="reg_lista" data-r="regalo">
+        <li>Caja Bosque <span>JABÓN + VELA</span></li>
+        <li>Caja Miel &amp; Canela <span>2 JABONES + VELA</span></li>
+        <li>Caja Eden <span>EDICIÓN NAVIDAD</span></li>
+      </ul>
+      <a class="btn solid" style="margin:0" href="#" data-t="reg_btn" data-wa>Pedir por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="hist" id="historia">
+  <div class="rev">
+    <div class="kicker" style="justify-content:center;color:var(--salvia)" data-t="hist_kicker">Nuestra historia</div>
+    <h2 data-t="hist_titulo" data-r="rico">Dos años, <em>muchas manos</em><br>y un mismo sueño</h2>
+    <p data-t="hist_p1">Tierra Eden empezó en una cocina, con unas pocas recetas y la idea de hacer las cosas bien. Hoy sigue creciendo igual que siempre: de persona en persona, de boca en boca.</p>
+    <p data-t="hist_p2">Creemos que cuidar lo que usamos es una forma de cuidar el lugar donde vivimos.</p>
+    <div class="firma" data-t="hist_firma">— Con cariño, Tierra Eden</div>
+  </div>
+</section>
+
+<footer>
+  <h3 class="rev" data-t="cont_titulo" data-r="rico">¿Hablamos? Te <em>escuchamos</em> con gusto.</h3>
+  <a class="btn" href="#" data-t="cont_btn" data-wa>Escríbenos por WhatsApp</a>
+  <div class="redes"><a href="#" data-red="instagram">Instagram</a><a href="#" data-red="facebook">Facebook</a><a href="#" data-red="correo">Correo</a></div>
+  <div class="pie" data-t="pie">© Tierra Eden · Hecho a mano, con calma</div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+document.querySelectorAll('nav ul a').forEach(a=>a.addEventListener('click',e=>{if(innerWidth>860)return;e.preventDefault();const id=a.getAttribute('href'),el=id.length>1?document.querySelector(id):null;const b=document.body;b.classList.add('sin-anim');b.classList.remove('abierto');const h=document.documentElement;h.style.scrollBehavior='auto';window.scrollTo(0,el?(el.id==='catalogo'&&el.querySelector('.sec-t')?el.querySelector('.sec-t').getBoundingClientRect().top-28:el.getBoundingClientRect().top)+scrollY-56:0);requestAnimationFrame(()=>requestAnimationFrame(()=>{b.classList.remove('sin-anim');h.style.scrollBehavior=''}))}));
+document.getElementById('menuBtn')&&0;
+const n=document.getElementById('nieve');
+for(let i=0;i<26;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.animationDuration=(6+Math.random()*8)+'s';s.style.animationDelay=(-Math.random()*10)+'s';s.style.width=s.style.height=(3+Math.random()*5)+'px';n.appendChild(s)}
+</script>
+<div class="lb" id="lb"><div class="lb-card"><button class="lb-x" id="lbX" aria-label="Cerrar">×</button><div class="lb-fotos" id="lbFotos"></div><div class="lb-pts" id="lbPts"></div><div class="lb-txt"><h3 id="lbN"></h3><div class="pr" id="lbP"></div><p id="lbD"></p><button class="btn solid" style="margin:0;width:100%;border:0;cursor:pointer;font:inherit" id="lbAdd" type="button">Agregar al pedido</button><a class="mini" id="lbGo" target="_blank" rel="noopener">Pedir solo este por WhatsApp</a></div></div></div>
+<button id="cartBar" type="button" hidden></button>
+<div class="lb" id="pd"><div class="lb-card"><button class="lb-x" id="pdX" aria-label="Cerrar">×</button><div class="pd-body" id="pdBody"></div></div></div>
+<div id="teToast"></div>
+<div class="copos" id="copos"></div>
+<div class="pal" id="pal" hidden><div class="pal-list" id="palList"></div><button class="pal-btn" id="palBtn">Paleta <span id="palNum">1</span></button></div>
+<script>
+const PALS=[
+ ['1','Bosque (la actual)',['#F5EEE2','#5E6E4B','#B87454','#DDA94B']],
+ ['2','Lavanda y niebla',['#F5F1F7','#6B5B8A','#B2688A','#E0B66A']],
+ ['3','Miel y ámbar (navideña)',['#FBF2E1','#8A6A2F','#A8432E','#E3A937']],
+ ['4','Arcilla y rosa',['#F9EFEA','#8C5A48','#C26A55','#E2A760']],
+ ['5','Noche de Eden (oscura)',['#1C241A','#A9B393','#E0976F','#E8B955']],
+ ['6','Navidad (rojo, pino y dorado)',['#FBF6EC','#1F5A3C','#B3262E','#D9A93B']]
+];
+const pl=document.getElementById('palList'),pn=document.getElementById('palNum');
+let kk=document.querySelector('.hero .kicker'),kt=kk.textContent;
+function setPal(k){document.documentElement.dataset.paleta=k;kk.textContent=(k=='6')?'Edición Navidad · Hecho a mano':kt;pn.textContent=k;[...pl.children].forEach(b=>b.classList.toggle('sel',b.dataset.k==k));}
+PALS.forEach(p=>{const b=document.createElement('button');b.dataset.k=p[0];b.innerHTML='<b>'+p[0]+'</b>'+p[1]+'<span class="sw">'+p[2].map(c=>'<i style="background:'+c+'"></i>').join('')+'</span>';b.onclick=()=>{setPal(p[0]);document.getElementById('pal').classList.remove('on')};pl.appendChild(b)});
+const cp=document.getElementById('copos');for(let i=0;i<34;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';const z=2+Math.random()*5;s.style.width=s.style.height=z+'px';s.style.animationDuration=(7+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*12)+'s';cp.appendChild(s)}
+document.getElementById('palBtn').onclick=()=>document.getElementById('pal').classList.toggle('on');
+const PREVIEW=location.search.includes('paletas');
+let ini='1';try{if(PREVIEW)ini=new URLSearchParams(location.search).get('p')||'1';else{const c=JSON.parse(localStorage.getItem('teCache')||'null');ini=(c&&c.a&&c.a.paleta)||'1'}}catch(e){}
+if(PREVIEW)document.getElementById('pal').hidden=false;
+setPal(PALS.some(p=>p[0]==ini)?ini:'1');
+function ajustaArco(){const art=document.querySelector('.hero-art'),h=document.querySelector('.hero');
+ if(innerWidth<=860){const hr=h.getBoundingClientRect(),k=document.querySelector('.hero .kicker').getBoundingClientRect(),t=document.querySelector('.hero p').getBoundingClientRect();
+  art.style.top=(k.top-hr.top)+'px';art.style.height=(t.bottom-k.top)+'px'}else{art.style.top='';art.style.height=''}}
+addEventListener('resize',ajustaArco);addEventListener('load',ajustaArco);if(document.fonts)document.fonts.ready.then(ajustaArco);ajustaArco();
+</script>
+<script src="config.js"></script>
+<script>
+/* Textos y ajustes desde la base de datos (con respaldo: si falla, queda lo que ya esta escrito) */
+(function(){
+const C=window.TE_CONFIG;if(!C)return;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rico=s=>esc(s).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
+function textos(m){window.TE_T=m;
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const v=m[el.dataset.t];if(v===undefined||v==='')return;
+    const r=el.dataset.r;
+    if(r==='rico')el.innerHTML=rico(v);
+    else if(r==='chips')el.innerHTML=v.split('\n').filter(x=>x.trim()).map(x=>'<span class="ing">'+esc(x.trim())+'</span>').join('');
+    else if(r==='regalo')el.innerHTML=v.split('\n').filter(x=>x.trim()).map(x=>{const p=x.split('|');return '<li>'+esc(p[0].trim())+(p[1]?' <span>'+esc(p[1].trim())+'</span>':'')+'</li>'}).join('');
+    else el.textContent=v;
+  });
+  if(m.hero_kicker){kt=m.hero_kicker;setPal(document.documentElement.dataset.paleta||'1')}
+  if(window.teRenderCat)teRenderCat();
+}
+function ajustes(a){window.TE_AJ=a;
+  const num=(a.whatsapp||'').replace(/\D/g,'');
+  document.querySelectorAll('[data-wa]').forEach(el=>{if(num){el.href='https://wa.me/'+num+'?text='+encodeURIComponent(a.whatsapp_mensaje||'Hola Tierra Eden, quiero información');el.target='_blank';el.rel='noopener'}});
+  const r=a.instagram,f=a.facebook,c=a.correo;
+  const set=(k,h)=>{const el=document.querySelector('[data-red="'+k+'"]');if(!el)return;if(h){el.href=h;el.target='_blank';el.rel='noopener'}};
+  set('instagram',r);set('facebook',f);set('correo',c?'mailto:'+c:'');
+  if(!PREVIEW&&/^[1-6]$/.test(a.paleta||''))setPal(a.paleta);if(window.teRenderCat)teRenderCat();
+}
+const get=t=>fetch(C.url+'/rest/v1/'+t+'?select=clave,valor',{headers:{apikey:C.key}}).then(r=>r.ok?r.json():[]).catch(()=>[]);
+const mapa=l=>Object.fromEntries(l.map(x=>[x.clave,x.valor]));
+try{const c=JSON.parse(localStorage.getItem('teCache')||'null');if(c){textos(c.t);ajustes(c.a)}}catch(e){}
+Promise.all([get('contenido'),get('ajustes')]).then(([t,a])=>{
+  if(!t.length&&!a.length)return;
+  const mt=mapa(t),ma=mapa(a);textos(mt);ajustes(ma);
+  try{localStorage.setItem('teCache',JSON.stringify({t:mt,a:ma}))}catch(e){}
+});
+})();
+</script>
+<script>
+/* Catalogo de productos y pedido por la pagina */
+(function(){
+const C=window.TE_CONFIG;if(!C)return;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CATN={jabones:'Jabones',velas:'Velas',cajas:'Cajas de regalo',otros:'Otros'};
+const tx=(k,d)=>((window.TE_T||{})[k])||d;
+const $=id=>document.getElementById(id);
+const HOJA='<svg viewBox="0 0 60 80" width="46" fill="none"><path d="M30 76C28 52 31 28 30 6" stroke="currentColor" stroke-width="1.6"/><path d="M30 56C14 52 8 40 10 28c14 3 20 14 20 28ZM30 36C46 32 52 20 48 8 34 12 30 24 30 36Z" fill="currentColor" opacity=".55"/></svg>';
+let cat='todos',P=[],cart=[],F={n:'',t:'',e:'retiro',d:'',o:''},vista='carrito',gracias=null;
+try{cart=JSON.parse(localStorage.getItem('teCarrito')||'[]')}catch(e){}
+function dinero(n){const A=window.TE_AJ||{};return (A.moneda||'$')+Number(n).toLocaleString('es',{minimumFractionDigits:0,maximumFractionDigits:2})}
+function precio(p){return p.precio==null?'Consultar precio':dinero(p.precio)}
+function numWa(){const A=window.TE_AJ||{};return (A.whatsapp||'').replace(/\D/g,'')}
+function wa(p){const n=numWa();if(!n)return '#';return 'https://wa.me/'+n+'?text='+encodeURIComponent('Hola Tierra Eden, quiero pedir: '+p.nombre+(p.precio!=null?' ('+precio(p)+')':''))}
+function aviso(t,mal){const e=$('teToast');e.textContent=t;e.className='on'+(mal?' mal':'');clearTimeout(aviso.h);aviso.h=setTimeout(()=>e.className='',2400)}
+
+/* --- carrito --- */
+function guardarCart(){try{localStorage.setItem('teCarrito',JSON.stringify(cart))}catch(e){}barra()}
+function lineas(){return cart.map(l=>({p:P.find(x=>x.id===l.id),c:l.c})).filter(x=>x.p&&x.p.disponible)}
+function totalDe(ls){return ls.reduce((s,x)=>s+(x.p.precio==null?0:Number(x.p.precio)*x.c),0)}
+function agregar(id){const l=cart.find(x=>x.id===id);if(l)l.c=Math.min(50,l.c+1);else cart.push({id,c:1});guardarCart();aviso('Agregado a tu pedido ✓')}
+function barra(){
+  const b=$('cartBar'),ls=lineas(),n=ls.reduce((s,x)=>s+x.c,0);
+  b.hidden=!n||$('pd').classList.contains('on');document.body.classList.toggle('concarrito',!!n);
+  if(n){b.innerHTML='<span class="cb-n">'+n+'</span><span class="cb-t">'+esc(tx('ped_titulo','Mi pedido'))+'</span><span class="cb-p">'+esc(dinero(totalDe(ls)))+'</span><span class="cb-a">&rarr;</span>';if(window.teN!==undefined&&n>window.teN){const e=b.querySelector('.cb-n');e.classList.add('pop')}window.teN=n}else window.teN=0;
+}
+function abrirPedido(){vista=gracias?'gracias':'carrito';pintarPedido();$('pd').classList.add('on');document.body.classList.add('lbabierto');barra()}
+function cerrarPedido(){$('pd').classList.remove('on');document.body.classList.remove('lbabierto');if(vista==='gracias'){gracias=null;vista='carrito'}barra()}
+function pintarPedido(){
+  const body=$('pdBody');
+  if(vista==='gracias'&&gracias){
+    body.innerHTML='<div class="pd-ok"><h3>¡Gracias!</h3>'+(gracias.numero?'<div class="num">Pedido #'+esc(gracias.numero)+'</div>':'')+'<p>'+(gracias.guardado?'Recibimos tu pedido. ':'No pudimos guardarlo en la página, pero puedes enviarlo por WhatsApp. ')+'Te escribiremos para confirmarlo y coordinar la entrega.</p>'+(gracias.url?'<a class="btn solid" href="'+esc(gracias.url)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none">Abrir WhatsApp</a>':'')+'<button class="btn" id="pdCerrar" type="button" style="background:none;color:var(--bosque);border:1px solid var(--bosque)">Seguir viendo productos</button></div>';
+    $('pdCerrar').onclick=cerrarPedido;return;
+  }
+  const ls=lineas();
+  if(!ls.length){body.innerHTML='<h3>'+esc(tx('ped_titulo','Mi pedido'))+'</h3><p style="text-align:center;color:var(--txt2);padding:20px 0">Tu pedido está vacío.</p><button class="btn" id="pdCerrar" type="button" style="background:none;color:var(--bosque);border:1px solid var(--bosque)">Ver productos</button>';$('pdCerrar').onclick=cerrarPedido;return}
+  const consultar=ls.some(x=>x.p.precio==null);
+  body.innerHTML='<h3>'+esc(tx('ped_titulo','Mi pedido'))+'</h3>'+
+    ls.map(x=>'<div class="pd-li"><div class="n"><b>'+esc(x.p.nombre)+'</b><small>'+esc(precio(x.p))+'</small></div><div class="pd-q"><button type="button" data-m="'+esc(x.p.id)+'">−</button><span>'+x.c+'</span><button type="button" data-s="'+esc(x.p.id)+'">+</button></div></div>').join('')+
+    '<div class="pd-total"><span>Total</span><b>'+dinero(totalDe(ls))+'</b></div>'+(consultar?'<div class="pd-nota">Los productos con “Consultar precio” no están sumados.</div>':'')+
+    '<div class="pd-form"><label for="pdN">Tu nombre</label><input id="pdN" maxlength="80" autocomplete="name" value="'+esc(F.n)+'">'+
+    '<label for="pdT">Tu teléfono o WhatsApp (con código de país)</label><input id="pdT" inputmode="tel" maxlength="25" autocomplete="tel" value="'+esc(F.t)+'">'+
+    '<label>¿Cómo lo recibes?</label><div class="pd-ent"><button type="button" data-e="retiro" class="'+(F.e==='retiro'?'on':'')+'">Lo retiro</button><button type="button" data-e="envio" class="'+(F.e==='envio'?'on':'')+'">Envío a domicilio</button></div>'+
+    '<div id="pdDw" '+(F.e==='envio'?'':'hidden')+'><label for="pdD">Dirección de entrega</label><textarea id="pdD" maxlength="200">'+esc(F.d)+'</textarea></div>'+
+    '<label for="pdO">Notas (opcional)</label><textarea id="pdO" maxlength="400" placeholder="Ej.: aroma, regalo, hora de entrega">'+esc(F.o)+'</textarea></div>'+
+    '<div class="pd-err" id="pdErr"></div><button class="btn solid" id="pdEnv" type="button">'+esc(tx('ped_enviar','Enviar pedido por WhatsApp'))+'</button><button class="pd-vaciar" id="pdVaciar" type="button">Vaciar mi pedido</button>';
+  body.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>cambiar(b.dataset.m,-1));
+  body.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>cambiar(b.dataset.s,1));
+  body.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{F.e=b.dataset.e;body.querySelectorAll('[data-e]').forEach(x=>x.classList.toggle('on',x===b));$('pdDw').hidden=F.e!=='envio'});
+  $('pdN').oninput=e=>F.n=e.target.value;$('pdT').oninput=e=>F.t=e.target.value;$('pdD').oninput=e=>F.d=e.target.value;$('pdO').oninput=e=>F.o=e.target.value;
+  $('pdEnv').onclick=enviar;$('pdVaciar').onclick=()=>{cart=[];guardarCart();cerrarPedido();aviso('Pedido vaciado')};
+}
+function cambiar(id,d){const l=cart.find(x=>x.id===id);if(!l)return;l.c+=d;if(l.c<1)cart=cart.filter(x=>x!==l);if(l.c>50)l.c=50;guardarCart();pintarPedido()}
+async function enviar(){
+  const ls=lineas(),err=$('pdErr');err.textContent='';
+  const nombre=F.n.trim(),tel=F.t.trim();
+  if(nombre.length<2){err.textContent='Escribe tu nombre';return}
+  if(tel.replace(/\D/g,'').length<7){err.textContent='Escribe un teléfono válido';return}
+  if(F.e==='envio'&&F.d.trim().length<5){err.textContent='Escribe la dirección de entrega';return}
+  const btn=$('pdEnv');btn.disabled=true;btn.textContent='Enviando…';
+  let numero=null,total=totalDe(ls),guardado=false;
+  try{
+    const r=await fetch(C.url+'/rest/v1/rpc/crear_pedido',{method:'POST',headers:{apikey:C.key,'Content-Type':'application/json'},body:JSON.stringify({p_nombre:nombre,p_telefono:tel,p_entrega:F.e,p_direccion:F.e==='envio'?F.d.trim():null,p_notas:F.o.trim()||null,p_items:ls.map(x=>({id:x.p.id,c:x.c}))})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){btn.disabled=false;btn.textContent=tx('ped_enviar','Enviar pedido por WhatsApp');err.textContent=j.message||'No se pudo enviar el pedido';return}
+    numero=j.numero;total=j.total;guardado=true;
+  }catch(e){/* sin conexion con la base: se manda solo por WhatsApp */}
+  const n=numWa();
+  const lin=ls.map(x=>'• '+x.c+' x '+x.p.nombre+' — '+(x.p.precio==null?'consultar':dinero(Number(x.p.precio)*x.c))).join('\n');
+  const msg='Hola Tierra Eden, quiero hacer este pedido'+(numero?' (#'+numero+')':'')+':\n'+lin+'\nTotal: '+dinero(total)+'\n\nNombre: '+nombre+'\nTeléfono: '+tel+'\nEntrega: '+(F.e==='envio'?'Envío a '+F.d.trim():'Lo retiro')+(F.o.trim()?'\nNotas: '+F.o.trim():'');
+  const url=n?'https://wa.me/'+n+'?text='+encodeURIComponent(msg):null;
+  gracias={numero,guardado,url};cart=[];guardarCart();F.o='';vista='gracias';pintarPedido();
+  if(url)setTimeout(()=>{location.href=url},500);
+}
+$('pdX').onclick=cerrarPedido;
+$('pd').addEventListener('click',e=>{if(e.target.id==='pd')cerrarPedido()});
+$('cartBar').onclick=abrirPedido;
+
+/* --- catalogo --- */
+let lbProd=null;
+function abrir(p){
+  lbProd=p;
+  const f=$('lbFotos');
+  f.innerHTML=(p.fotos&&p.fotos.length?p.fotos.map(u=>'<img src="'+esc(u)+'" alt="'+esc(p.nombre)+'">').join(''):'<div>'+HOJA+'</div>');
+  const pts=$('lbPts');pts.innerHTML=(p.fotos&&p.fotos.length>1?p.fotos.map((_,i)=>'<i'+(i?'':' class="on"')+'></i>').join(''):'');
+  f.onscroll=()=>{const i=Math.round(f.scrollLeft/f.clientWidth);pts.querySelectorAll('i').forEach((e,k)=>e.classList.toggle('on',k===i))};
+  f.scrollLeft=0;
+  $('lbN').textContent=p.nombre;$('lbP').textContent=precio(p);$('lbD').textContent=p.descripcion||'';
+  const add=$('lbAdd'),go=$('lbGo');add.hidden=go.hidden=!p.disponible;
+  add.textContent=tx('cat_agregar','Agregar al pedido');go.href=wa(p);go.textContent=tx('cat_btn','Pedir solo este por WhatsApp');
+  $('lb').classList.add('on');document.body.classList.add('lbabierto');
+}
+function cerrar(){$('lb').classList.remove('on');document.body.classList.remove('lbabierto')}
+$('lbX').onclick=cerrar;
+$('lb').addEventListener('click',e=>{if(e.target.id==='lb')cerrar()});
+$('lbAdd').onclick=()=>{if(lbProd){agregar(lbProd.id);cerrar()}};
+addEventListener('keydown',e=>{if(e.key==='Escape'){cerrar();cerrarPedido()}});
+let primera=true,tok=0,obs=null,tm=0;
+window.teRenderCat=function(){
+  const sec=$('catalogo');
+  if(!P.length){sec.hidden=true;barra();return}
+  sec.hidden=false;
+  const cats=[...new Set(P.map(p=>p.categoria))];
+  document.querySelectorAll('[data-menu]').forEach(a=>{const c=a.dataset.cat;a.parentElement.style.display=(c==='todos'?cats.length>1:cats.includes(c))?'':'none'});
+  if(cat!=='todos'&&!cats.includes(cat))cat='todos';
+  const chips=$('catChips');
+  chips.innerHTML=cats.length>1?['todos'].concat(cats).map(c=>'<button type="button" data-c="'+c+'" class="'+(c===cat?'on':'')+'">'+(c==='todos'?'Todos':esc(CATN[c]||c))+'</button>').join(''):'';
+  chips.querySelectorAll('button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;window.teAnim='grid';teRenderCat()});
+  const lista=cat==='todos'?P:P.filter(p=>p.categoria===cat);
+  const grid=$('catGrid');
+  grid.innerHTML=lista.map(p=>'<article class="pc" data-id="'+esc(p.id)+'"><div class="ph">'+(p.fotos&&p.fotos[0]?'<img loading="lazy" src="'+esc(p.fotos[0])+'" alt="'+esc(p.nombre)+'">':HOJA)+(p.disponible?'':'<span class="ag">'+esc(tx('cat_agotado','Agotado'))+'</span>')+'</div><h3>'+esc(p.nombre)+'</h3><div class="pr">'+esc(precio(p))+'</div>'+(p.disponible?'<button class="go" type="button">'+esc(tx('cat_agregar','Agregar al pedido'))+'</button>':'')+'</article>').join('');
+  if(!window.teAnim&&primera)window.teAnim=true;
+  primera=false;
+  if(window.teAnim){
+    const solo=window.teAnim==='grid';window.teAnim=false;
+    const ancho=innerWidth>860,cols=Math.max(1,getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+    grid.querySelectorAll('.pc').forEach((el,i)=>el.style.setProperty('--d',ancho?(Math.floor(i/cols)*110+(i%cols)*60+(solo?0:260)):((Math.min(i,7)+(solo?0:3))*130)));
+    const jugar=()=>{sec.classList.remove('espera','anim');grid.classList.remove('anim');void sec.offsetWidth;if(!solo)sec.classList.add('anim');grid.classList.add('anim')};
+    const mia=++tok;
+    if(solo){jugar()}
+    else{
+      sec.classList.add('espera');
+      const ya=()=>{if(mia!==tok)return;if(obs){obs.disconnect();obs=null}clearTimeout(tm);jugar()};
+      const r=sec.getBoundingClientRect();
+      if(obs){obs.disconnect();obs=null}clearTimeout(tm);
+      if(r.top<innerHeight*.6&&r.bottom>0){setTimeout(ya,30)}
+      else if('IntersectionObserver' in window){obs=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting))ya()},{rootMargin:'0px 0px -40% 0px'});obs.observe(sec.querySelector('.sec-t'));tm=setTimeout(ya,4000)}
+      else ya();
+    }
+  }
+  grid.querySelectorAll('.pc').forEach(el=>el.onclick=e=>{if(e.target.closest('.go')){agregar(el.dataset.id);return}const p=P.find(x=>x.id===el.dataset.id);if(p)abrir(p)});
+  barra();
+};
+document.querySelectorAll('[data-cat]').forEach(a=>a.addEventListener('click',e=>{cat=a.dataset.cat;window.teAnim=true;if(window.teRenderCat)teRenderCat();
+  if(a.closest('nav')||$('catalogo').hidden||innerWidth>860)return;
+  e.preventDefault();const h=document.documentElement;h.style.scrollBehavior='auto';window.scrollTo(0,$('catalogo').querySelector('.sec-t').getBoundingClientRect().top-28+scrollY-56);requestAnimationFrame(()=>requestAnimationFrame(()=>{h.style.scrollBehavior=''}));
+}));
+document.querySelectorAll('[data-menu]').forEach(a=>a.addEventListener('click',e=>{if($('catalogo').hidden){e.preventDefault();const s=$('productos');if(s)s.scrollIntoView({behavior:'smooth'})}}));
+try{const c=JSON.parse(localStorage.getItem('teProd')||'null');if(c){P=c;teRenderCat()}}catch(e){}
+fetch(C.url+'/rest/v1/productos?select=*&visible=eq.true&order=orden.asc,creado.asc',{headers:{apikey:C.key}}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d)return;P=d;try{localStorage.setItem('teProd',JSON.stringify(d))}catch(e){}teRenderCat();
+}).catch(()=>{});
+})();
+</script>
+<a id="volverAdmin" href="admin.html" hidden>← Administración</a>
+<style>
+#volverAdmin{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:65;background:var(--bosque);color:var(--crema);padding:11px 18px;border-radius:40px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 8px 24px rgba(0,0,0,.25);font-family:'Jost',sans-serif}
+#volverAdmin[hidden]{display:none}
+@media (max-width:860px){#catalogo .sec-t{margin-bottom:34px}}
+@keyframes teIn{0%{opacity:0;transform:translateY(26px) scale(.965);filter:blur(6px)}60%{opacity:1;filter:blur(0)}80%{transform:translateY(-3px) scale(1.004)}100%{opacity:1;transform:none;filter:none}}
+@keyframes teInPC{0%{opacity:0;transform:translateY(16px) scale(.985);filter:blur(3px)}60%{opacity:1;filter:blur(0)}82%{transform:translateY(-1.5px) scale(1.002)}100%{opacity:1;transform:none;filter:none}}
+@keyframes teImg{from{transform:scale(1.09)}to{transform:scale(1)}}
+@keyframes teImgPC{from{transform:scale(1.05)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:no-preference){
+#catalogo.espera .sec-t .kicker,#catalogo.espera .sec-t h2,#catalogo.espera .cat-chips button,#catalogo.espera .pc{opacity:0}
+#catalogo.anim .sec-t .kicker{animation:teIn 1.05s cubic-bezier(.33,.9,.4,1) both}
+#catalogo.anim .sec-t h2{animation:teIn 1.05s cubic-bezier(.33,.9,.4,1) 130ms both}
+#catalogo.anim .cat-chips button{animation:teIn .9s cubic-bezier(.33,.9,.4,1) 260ms both}
+#catalogo.anim .cat-chips button:nth-child(2){animation-delay:330ms}
+#catalogo.anim .cat-chips button:nth-child(3){animation-delay:400ms}
+#catalogo.anim .cat-chips button:nth-child(n+4){animation-delay:470ms}
+#catGrid.anim .pc{animation:teIn 1.05s cubic-bezier(.33,.9,.4,1) both;animation-delay:calc(var(--d,0)*1ms)}
+#catGrid.anim .pc .ph{overflow:hidden}
+#catGrid.anim .pc .ph img,#catGrid.anim .pc .ph svg{animation:teImg 1.5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d,0)*1ms)}
+}
+@media (min-width:861px) and (prefers-reduced-motion:no-preference){
+#catalogo.anim .sec-t .kicker{animation:teInPC .85s cubic-bezier(.33,.9,.4,1) both}
+#catalogo.anim .sec-t h2{animation:teInPC .85s cubic-bezier(.33,.9,.4,1) 90ms both}
+#catalogo.anim .cat-chips button{animation:teInPC .75s cubic-bezier(.33,.9,.4,1) 180ms both}
+#catalogo.anim .cat-chips button:nth-child(2){animation-delay:230ms}
+#catalogo.anim .cat-chips button:nth-child(3){animation-delay:280ms}
+#catalogo.anim .cat-chips button:nth-child(n+4){animation-delay:330ms}
+#catGrid.anim .pc{animation:teInPC .85s cubic-bezier(.33,.9,.4,1) both;animation-delay:calc(var(--d,0)*1ms)}
+#catGrid.anim .pc .ph img,#catGrid.anim .pc .ph svg{animation:teImgPC 1.2s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d,0)*1ms)}
+}@media (min-width:900px){#volverAdmin{bottom:auto;top:50%;left:0;transform:translateY(-50%);border-radius:0 40px 40px 0;padding:12px 18px 12px 14px}}
+/* pedido / carrito */
+#cartBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:64;background:var(--arcilla);color:#fff;border:0;border-radius:40px;padding:15px 26px;font:inherit;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 10px 28px rgba(0,0,0,.28);cursor:pointer;white-space:nowrap;max-width:92vw}
+#cartBar[hidden]{display:none}
+#cartBar{display:inline-flex;align-items:center;gap:12px;padding:10px 20px 10px 10px}
+#cartBar .cb-n{min-width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.24);display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;letter-spacing:0;padding:0 6px}
+#cartBar .cb-p{opacity:.95}
+#cartBar .cb-a{font-size:1rem;letter-spacing:0;transition:transform .4s}
+#cartBar:hover .cb-a{transform:translateX(3px)}
+@keyframes cbPop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+#cartBar .cb-n.pop{animation:cbPop .55s cubic-bezier(.3,1.5,.5,1)}
+html[data-paleta="5"] #cartBar{background:linear-gradient(135deg,#34452F,#243020);color:#F1E9D8;font-weight:400;border:1px solid rgba(169,179,147,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 12px 30px rgba(0,0,0,.55),0 0 0 4px rgba(169,179,147,.08),0 0 26px rgba(169,179,147,.16)}
+html[data-paleta="5"] #cartBar .cb-n{background:#A9B393;color:#1C241A;font-weight:500}
+html[data-paleta="5"] #cartBar .cb-a{color:#E8B955}
+body.concarrito{padding-bottom:84px}
+.pd-vaciar{display:block;margin:16px auto 0;background:none;border:0;color:#8a7f6a;font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer}
+#teToast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,16px);background:var(--bosque);color:var(--crema);padding:11px 22px;border-radius:30px;font-size:.85rem;opacity:0;pointer-events:none;transition:.3s;z-index:80;max-width:90vw;text-align:center}
+#teToast.on{opacity:1;transform:translate(-50%,0)}
+#teToast.mal{background:#a3362e}
+.pc .go{font:inherit;background:none;cursor:pointer;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase}
+.lb-txt .mini{display:block;margin-top:14px;font-size:.78rem;color:var(--musgo);text-decoration:underline}
+.pd-body{padding:30px 22px 0}
+.pd-body h3{font-size:2rem;color:var(--bosque);text-align:center;margin-bottom:14px}
+.pd-li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--linea)}
+.pd-li .n{flex:1;min-width:0}.pd-li .n b{display:block;font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--bosque)}
+.pd-li .n small{color:var(--txt2)}
+.pd-q{display:flex;align-items:center;gap:8px}
+.pd-q button{width:32px;height:32px;border-radius:50%;border:1px solid var(--musgo);background:none;color:var(--musgo);font-size:1.1rem;cursor:pointer;line-height:1}
+.pd-q span{min-width:20px;text-align:center}
+.pd-total{display:flex;justify-content:space-between;font-size:1.15rem;padding:16px 0 4px}
+.pd-total b{color:var(--arcilla);font-family:'Cormorant Garamond',serif;font-size:1.6rem}
+.pd-nota{font-size:.78rem;color:var(--txt2);margin-bottom:8px}
+.pd-form label{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--musgo);margin:16px 0 6px}
+.pd-form input,.pd-form textarea{width:100%;padding:13px;border:1px solid var(--linea);border-radius:12px;background:#fff;color:#3A3329;font:inherit;font-size:1rem}
+.pd-form textarea{min-height:70px;resize:vertical}
+.pd-ent{display:flex;gap:10px}
+.pd-ent button{flex:1;padding:12px 6px;border-radius:14px;border:1px solid var(--musgo);background:none;color:var(--musgo);font:inherit;font-size:.85rem;cursor:pointer}
+.pd-ent button.on{background:var(--musgo);color:var(--crema)}
+.pd-err{color:#a3362e;font-size:.88rem;min-height:1.3em;margin-top:12px;text-align:center}
+.pd-body .btn{width:100%;margin:8px 0 0;text-align:center;border:0;cursor:pointer;font:inherit;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:16px}
+.pd-ok{text-align:center;padding-bottom:6px}.pd-ok .num{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:var(--arcilla)}
+.pd-ok p{margin:10px 0 18px;color:var(--txt)}
+body.esadmin .pal{bottom:calc(70px + env(safe-area-inset-bottom))}
+</style>
+<script>
+/* Solo para quien tiene la sesion del administrador abierta: boton para volver al panel */
+try{if(/[?&]cliente\b/.test(location.search))throw 0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^sb-.*-auth-token$/.test(k)){const s=JSON.parse(localStorage.getItem(k)||'null');if(s&&s.user&&(!s.expires_at||s.expires_at*1000>Date.now()-86400000)){document.getElementById('volverAdmin').hidden=false;document.body.classList.add('esadmin');break}}}}catch(e){}
+</script>
+</body>
+</html>

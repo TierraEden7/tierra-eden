@@ -1,0 +1,16 @@
+{
+  "name": "Tierra Eden · Administración",
+  "short_name": "TE Admin",
+  "description": "Panel de administración de Tierra Eden.",
+  "lang": "es",
+  "start_url": "admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#2B3626",
+  "theme_color": "#2B3626",
+  "icons": [
+    {"src": "iconos/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "iconos/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "iconos/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
