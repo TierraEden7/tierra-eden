@@ -829,7 +829,7 @@ body.esadmin .pal{bottom:calc(70px + env(safe-area-inset-bottom))}
 </style>
 <script>
 /* Solo para quien tiene la sesion del administrador abierta: boton para volver al panel */
-try{if(/[?&]cliente\b/.test(location.search))throw 0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^sb-.*-auth-token$/.test(k)){const s=JSON.parse(localStorage.getItem(k)||'null');if(s&&s.user&&(!s.expires_at||s.expires_at*1000>Date.now()-86400000)){document.getElementById('volverAdmin').hidden=false;document.body.classList.add('esadmin');break}}}}catch(e){}
+try{if(/[?&](cliente|app)\b/.test(location.search)||matchMedia('(display-mode: standalone)').matches)throw 0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^sb-.*-auth-token$/.test(k)){const s=JSON.parse(localStorage.getItem(k)||'null');if(s&&s.user&&(!s.expires_at||s.expires_at*1000>Date.now()-86400000)){document.getElementById('volverAdmin').hidden=false;document.body.classList.add('esadmin');break}}}}catch(e){}
 </script>
 </body>
 </html>

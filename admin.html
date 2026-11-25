@@ -113,7 +113,7 @@ select{width:100%;padding:14px;border:1px solid var(--linea);border-radius:12px;
 .pd .l2{font-size:.85rem;color:#6b6150;margin-top:2px}
 .est-b{display:inline-block;font-size:.72rem;padding:3px 10px;border-radius:20px;background:var(--lino);color:var(--bosque);letter-spacing:.04em}
 .est-b.nuevo{background:#f6dcc9;color:#9a4a22}.est-b.confirmado,.est-b.preparando{background:#e4ecd4;color:#3d6b3a}
-.est-b.listo{background:#d4e6ec;color:#22596b}.est-b.entregado{background:#e8e8e8;color:#555}.est-b.cancelado{background:#f2d4d0;color:#a3362e}
+.est-b.listo{background:#d4e6ec;color:#22596b}.est-b.entregado{background:#e8e8e8;color:#555}.est-b.pagado{background:#2f6b3a;color:#fff;margin-left:6px}.est-b.cancelado{background:#f2d4d0;color:#a3362e}
 .det h3{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--bosque)}
 .det .caja{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:14px 16px;margin:12px 0}
 .det .caja h4{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--musgo);margin-bottom:8px;font-weight:500}
@@ -432,7 +432,7 @@ async function abrirApariencia(){
   await leerAjustes();palSel=ajustes.paleta||'1';dibujarPals();ir('apariencia');
 }
 function dibujarPals(){
-  $('#verPaleta').href='boceto.html?paletas&p='+palSel;const c=$('#pals');c.innerHTML='';
+  $('#verPaleta').href='boceto.html?paletas&p='+palSel+(matchMedia('(display-mode: standalone)').matches?'&cliente':'');const c=$('#pals');c.innerHTML='';
   PALS.forEach(p=>{
     const b=document.createElement('button');b.type='button';b.className='pal'+(p[0]===palSel?' sel':'');
     b.innerHTML='<div class="sw">'+p[3].map(x=>'<i style="background:'+x+'"></i>').join('')+'</div><b>'+p[0]+'. '+esc(p[1])+'</b><small>'+esc(p[2])+'</small>';
@@ -602,8 +602,8 @@ $('#peBorrar').onclick=async()=>{
 };
 
 /* ---- pedidos ---- */
-const ESTADOS=[['nuevo','Nuevo'],['confirmado','Confirmado'],['preparando','Preparando'],['listo','Listo'],['entregado','Entregado'],['cancelado','Cancelado']];
-const FILTROS=[['activos','Activos'],['entregado','Entregados'],['cancelado','Cancelados'],['todos','Todos']];
+const ESTADOS=[['nuevo','Nuevo'],['confirmado','Confirmado'],['preparando','Preparando'],['listo','Listo'],['entregado','Entregado'],['cancelado','Anulado']];
+const FILTROS=[['activos','Activos'],['entregado','Entregados'],['cancelado','Anulados'],['todos','Todos']];
 let peds=[],pedFiltro='activos',pedSel=null;
 const estN=e=>(ESTADOS.find(x=>x[0]===e)||[0,e])[1];
 function dinero(n){return (ajustes.moneda||'$')+Number(n||0).toLocaleString('es',{minimumFractionDigits:0,maximumFractionDigits:2})}
@@ -629,7 +629,7 @@ function dibujarPeds(){
   lista.forEach(p=>{
     const b=document.createElement('button');b.type='button';b.className='pd';
     const n=(p.pedido_items||[]).reduce((s,i)=>s+i.cantidad,0);
-    b.innerHTML='<div class="l1"><b>#'+p.numero+' · '+esc(p.nombre)+'</b><span class="est-b '+p.estado+'">'+estN(p.estado)+'</span></div><div class="l2">'+n+' producto'+(n===1?'':'s')+' · '+dinero(p.total)+' · '+(p.entrega==='envio'?'Envío':'Retiro')+' · '+hace(p.creado)+'</div>';
+    b.innerHTML='<div class="l1"><b>#'+p.numero+' · '+esc(p.nombre)+'</b><span><span class="est-b '+p.estado+'">'+estN(p.estado)+'</span>'+(p.pagado_en?'<span class="est-b pagado">Pagado</span>':'')+'</span></div><div class="l2">'+n+' producto'+(n===1?'':'s')+' · '+dinero(p.total)+' · '+(p.entrega==='envio'?'Envío':'Retiro')+' · '+hace(p.creado)+'</div>';
     b.onclick=()=>verPedido(p.id);c.appendChild(b);
   });
 }
@@ -643,17 +643,30 @@ function msgCliente(p){
     preparando:'Hola '+nom+', ya estamos preparando tu pedido '+n+'.',
     listo:'Hola '+nom+', tu pedido '+n+' está listo'+(p.entrega==='envio'?' para enviarlo.':' para que lo retires.'),
     entregado:'Hola '+nom+', gracias por tu compra en Tierra Eden. ¡Esperamos que lo disfrutes!',
-    cancelado:'Hola '+nom+', tu pedido '+n+' fue cancelado. Si quieres, escríbenos y lo revisamos.'};
+    cancelado:'Hola '+nom+', tu pedido '+n+' fue anulado. Si quieres, escríbenos y lo revisamos.'};
   return t[p.estado]||t.nuevo;
+}
+function pintarPago(p){
+  const c=$('#pedPago');
+  if(p.pagado_en===undefined){c.innerHTML='<p class="sub" style="margin:0">Para marcar pagos falta preparar la base de datos (archivo 05-pagado.sql).</p>';return}
+  c.innerHTML='<p style="margin-bottom:10px">'+(p.pagado_en?'Pagado el '+new Date(p.pagado_en).toLocaleString('es',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Todavía sin pagar')+'</p><button type="button" class="btn'+(p.pagado_en?' sec':'')+'" id="btnPago" style="margin-top:0">'+(p.pagado_en?'Quitar marca de pagado':'Marcar como pagado')+'</button>';
+  $('#btnPago').onclick=async()=>{
+    if(p.pagado_en&&!confirm('¿Quitar la marca de pagado de este pedido?'))return;
+    const v=p.pagado_en?null:new Date().toISOString();$('#btnPago').disabled=true;
+    const {error}=await sb.from('pedidos').update({pagado_en:v}).eq('id',p.id);
+    if(error){$('#btnPago').disabled=false;toast('No se pudo guardar: '+error.message,true);return}
+    p.pagado_en=v;toast(v?'Marcado como pagado ✓':'Marca de pago quitada');verPedido(p.id);
+  };
 }
 function verPedido(id){
   pedSel=peds.find(p=>p.id===id);if(!pedSel)return;
   const p=pedSel,tel=(p.telefono||'').replace(/\D/g,'');
   const items=(p.pedido_items||[]).map(i=>'<div class="it"><span>'+i.cantidad+' × '+esc(i.nombre)+'</span><span>'+(i.precio==null?'consultar':dinero(i.precio*i.cantidad))+'</span></div>').join('');
-  $('#pedDetBody').innerHTML='<div class="det"><h3>Pedido #'+p.numero+'</h3><span class="est-b '+p.estado+'">'+estN(p.estado)+'</span> <small style="color:#8a7f6a"> '+new Date(p.creado).toLocaleString('es',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+'</small>'+
+  $('#pedDetBody').innerHTML='<div class="det"><h3>Pedido #'+p.numero+'</h3><span class="est-b '+p.estado+'">'+estN(p.estado)+'</span>'+(p.pagado_en?'<span class="est-b pagado">Pagado</span>':'')+' <small style="color:#8a7f6a"> '+new Date(p.creado).toLocaleString('es',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+'</small>'+
     '<div class="caja"><h4>Productos</h4>'+items+'<div class="tot"><span>Total</span><span>'+dinero(p.total)+'</span></div></div>'+
     '<div class="caja cont"><h4>Cliente</h4><b>'+esc(p.nombre)+'</b><br>Tel.: '+esc(p.telefono)+'<br>'+(p.entrega==='envio'?'Envío a: '+esc(p.direccion||'—'):'Lo retira en persona')+(p.notas?'<br>Notas: '+esc(p.notas):'')+'</div>'+
     '<div class="caja"><h4>Estado</h4><div class="chips" id="pedEst"></div></div>'+
+    '<div class="caja"><h4>Pago</h4><div id="pedPago"></div></div>'+
     '<a class="btn" id="pedWa" '+(tel?'href="https://wa.me/'+tel+'?text='+encodeURIComponent(msgCliente(p))+'" target="_blank" rel="noopener"':'')+' style="text-decoration:none;text-align:center">Escribir al cliente por WhatsApp</a>'+
     '<label class="c" for="pedNota" style="margin-top:20px">Nota interna (solo la ves tú)</label><textarea id="pedNota" rows="3">'+esc(p.nota_interna||'')+'</textarea>'+
     '<button class="btn sec" id="pedGuardaNota" type="button">Guardar nota</button></div>';
@@ -664,6 +677,7 @@ function verPedido(id){
       if(error){toast('No se pudo cambiar: '+error.message,true);return}
       p.estado=e[0];toast('Estado: '+e[1]+' ✓');verPedido(p.id);
     };ce.appendChild(b)});
+  pintarPago(p);
   $('#pedGuardaNota').onclick=async()=>{
     const {error}=await sb.from('pedidos').update({nota_interna:$('#pedNota').value.trim()||null}).eq('id',p.id);
     if(error){toast('No se pudo guardar: '+error.message,true);return}
@@ -678,6 +692,7 @@ function validarClave(a,b,actual){
   if(actual!==undefined&&a===actual)return 'La nueva debe ser distinta de la actual.';
   return '';
 }
+if(matchMedia('(display-mode: standalone)').matches){const l=$('#inicio .enlace');if(l)l.href='boceto.html?cliente'}
 function abrirCuenta(){
   $('#cuentaCorreo').textContent=perfil.email||'';
   $('#formCuenta').reset();$('#msgCuenta').textContent='';
