@@ -37,7 +37,8 @@ nav a:hover::after{width:100%}
 
 /* HERO */
 .hero{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:0 5vw;position:relative;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:flota 16s ease-in-out infinite}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:flota 16s ease-in-out infinite;pointer-events:none}
+.hero-btns{position:relative;z-index:3}
 .b1{width:46vw;height:46vw;background:var(--salvia);right:-10vw;top:-12vw}
 .b2{width:30vw;height:30vw;background:var(--miel);opacity:.28;left:-8vw;bottom:-10vw;animation-delay:-6s}
 @keyframes flota{50%{transform:translate(30px,-24px) scale(1.07)}}
