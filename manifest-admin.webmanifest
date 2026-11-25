@@ -4,7 +4,7 @@
   "description": "Panel de administración de Tierra Eden.",
   "lang": "es",
   "start_url": "admin.html",
-  "scope": "./",
+  "scope": "admin.html",
   "display": "standalone",
   "background_color": "#2B3626",
   "theme_color": "#2B3626",
