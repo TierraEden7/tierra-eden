@@ -113,7 +113,8 @@ select{width:100%;padding:14px;border:1px solid var(--linea);border-radius:12px;
 .pd .l2{font-size:.85rem;color:#6b6150;margin-top:2px}
 .est-b{display:inline-block;font-size:.72rem;padding:3px 10px;border-radius:20px;background:var(--lino);color:var(--bosque);letter-spacing:.04em}
 .est-b.nuevo{background:#f6dcc9;color:#9a4a22}.est-b.confirmado,.est-b.preparando{background:#e4ecd4;color:#3d6b3a}
-.est-b.listo{background:#d4e6ec;color:#22596b}.est-b.entregado{background:#e8e8e8;color:#555}.est-b.pagado{background:#2f6b3a;color:#fff;margin-left:6px}.est-b.cancelado{background:#f2d4d0;color:#a3362e}
+.est-b.listo{background:#d4e6ec;color:#22596b}.est-b.entregado{background:#e8e8e8;color:#555}.est-b.pagado{background:#2f6b3a;color:#fff;margin-left:6px}
+.deuda{background:var(--bosque);color:var(--crema);border-radius:16px;padding:16px;text-align:center;margin-bottom:14px}.deuda b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:2.2rem;line-height:1.2}.deuda small{opacity:.85}.est-b.cancelado{background:#f2d4d0;color:#a3362e}
 .det h3{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--bosque)}
 .det .caja{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:14px 16px;margin:12px 0}
 .det .caja h4{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--musgo);margin-bottom:8px;font-weight:500}
@@ -603,7 +604,9 @@ $('#peBorrar').onclick=async()=>{
 
 /* ---- pedidos ---- */
 const ESTADOS=[['nuevo','Nuevo'],['confirmado','Confirmado'],['preparando','Preparando'],['listo','Listo'],['entregado','Entregado'],['cancelado','Anulado']];
-const FILTROS=[['activos','Activos'],['entregado','Entregados'],['cancelado','Anulados'],['todos','Todos']];
+const FILTROS=[['activos','Activos'],['porcobrar','Por cobrar'],['entregado','Entregados'],['cancelado','Anulados'],['todos','Todos']];
+const debe=p=>!p.pagado_en&&p.estado!=='cancelado';
+function filtrarPeds(f){return f==='todos'?peds:f==='activos'?peds.filter(p=>['nuevo','confirmado','preparando','listo'].includes(p.estado)):f==='porcobrar'?peds.filter(debe):peds.filter(p=>p.estado===f)}
 let peds=[],pedFiltro='activos',pedSel=null;
 const estN=e=>(ESTADOS.find(x=>x[0]===e)||[0,e])[1];
 function dinero(n){return (ajustes.moneda||'$')+Number(n||0).toLocaleString('es',{minimumFractionDigits:0,maximumFractionDigits:2})}
@@ -611,7 +614,10 @@ function hace(f){const s=(Date.now()-new Date(f))/1000;if(s<60)return 'ahora';if
 async function cargarPeds(silencioso){
   const {data,error}=await sb.from('pedidos').select('*, pedido_items(*)').order('creado',{ascending:false}).limit(150);
   if(error){if(!silencioso)toast('No se pudieron leer los pedidos: '+error.message,true);return false}
-  peds=data;return true;
+  /* los pedidos sin pagar se traen todos, aunque sean antiguos, para que el total adeudado sea completo */
+  const s=await sb.from('pedidos').select('*, pedido_items(*)').is('pagado_en',null).neq('estado','cancelado').order('creado',{ascending:false}).limit(1000);
+  const ya=new Set(data.map(p=>p.id));
+  peds=data.concat((s.data||[]).filter(p=>!ya.has(p.id)));return true;
 }
 async function abrirPedidos(){
   await leerAjustes();
@@ -621,11 +627,15 @@ async function abrirPedidos(){
 function dibujarPeds(){
   const ch=$('#pedChips');ch.innerHTML='';
   FILTROS.forEach(f=>{const b=document.createElement('button');b.type='button';b.className=f[0]===pedFiltro?'on':'';
-    const n=f[0]==='activos'?peds.filter(p=>['nuevo','confirmado','preparando','listo'].includes(p.estado)).length:f[0]==='todos'?peds.length:peds.filter(p=>p.estado===f[0]).length;
-    b.textContent=f[1]+' ('+n+')';b.onclick=()=>{pedFiltro=f[0];dibujarPeds()};ch.appendChild(b)});
-  const lista=pedFiltro==='todos'?peds:pedFiltro==='activos'?peds.filter(p=>['nuevo','confirmado','preparando','listo'].includes(p.estado)):peds.filter(p=>p.estado===pedFiltro);
+    b.textContent=f[1]+' ('+filtrarPeds(f[0]).length+')';b.onclick=()=>{pedFiltro=f[0];dibujarPeds()};ch.appendChild(b)});
+  const lista=filtrarPeds(pedFiltro);
   const c=$('#listaPed');c.innerHTML='';
-  if(!lista.length)c.innerHTML='<p class="sub">No hay pedidos en esta lista.</p>';
+  if(!lista.length)c.innerHTML='<p class="sub">'+(pedFiltro==='porcobrar'?'No hay pedidos por cobrar.':'No hay pedidos en esta lista.')+'</p>';
+  else if(pedFiltro==='porcobrar'){
+    const suma=lista.reduce((s,p)=>s+Number(p.total||0),0);
+    const sinPrecio=lista.filter(p=>(p.pedido_items||[]).some(i=>i.precio==null)).length;
+    c.innerHTML='<div class="deuda"><small>Te deben</small><b>'+dinero(suma)+'</b><small>en '+lista.length+' pedido'+(lista.length===1?'':'s')+(sinPrecio?' · '+sinPrecio+' con productos a consultar, no sumados':'')+'</small></div>';
+  }
   lista.forEach(p=>{
     const b=document.createElement('button');b.type='button';b.className='pd';
     const n=(p.pedido_items||[]).reduce((s,i)=>s+i.cantidad,0);
