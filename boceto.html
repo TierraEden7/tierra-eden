@@ -716,7 +716,7 @@ window.teRenderCat=function(){
   document.querySelectorAll('[data-menu]').forEach(a=>{const c=a.dataset.cat;a.parentElement.style.display=(c==='todos'?cats.length>1:cats.includes(c))?'':'none'});
   if(cat!=='todos'&&!cats.includes(cat))cat='todos';
   const chips=$('catChips');
-  chips.innerHTML=cats.length>1?['todos'].concat(cats).map(c=>'<button type="button" data-c="'+c+'" class="'+(c===cat?'on':'')+'">'+(c==='todos'?'Todos':esc(CATN[c]||c))+'</button>').join(''):'';
+  chips.innerHTML=cats.length>1?['todos'].concat(cats).map(c=>'<button type="button" data-c="'+c+'" class="'+(c===cat?'on':'')+'">'+(c==='todos'?'Todos':c==='cajas'?'Cajas':esc(CATN[c]||c))+'</button>').join(''):'';
   chips.querySelectorAll('button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;window.teAnim='grid';teRenderCat()});
   const lista=cat==='todos'?P:P.filter(p=>p.categoria===cat);
   const grid=$('catGrid');
@@ -761,7 +761,16 @@ fetch(C.url+'/rest/v1/productos?select=*&visible=eq.true&order=orden.asc,creado.
 /* Portada en computador: linea fina alrededor del arco, igual que en celular y tablet */
 @media(min-width:861px){.hero-art::before{content:"";position:absolute;bottom:0;width:calc(min(34vw,430px) + 24px);height:calc(92% + 12px);border:1px solid var(--musgo);border-bottom:0;border-radius:999px 999px 0 0;opacity:.45;pointer-events:none}}
 @media(min-width:861px) and (max-width:1024px){.hero-art::before{width:calc(min(40vw,380px) + 24px)}}
-@media (max-width:860px){#catalogo .sec-t{margin-bottom:22px}#catalogo .cat-chips{margin:0 auto 30px;gap:8px;max-width:340px}#catalogo .cat-chips button{padding:8px 16px;font-size:.68rem}}
+/* Cabecera del catalogo: adorno de hoja y pestanas tipo revista */
+#catalogo .sec-t{margin-bottom:0}
+#catalogo .sec-t::after{content:"";display:block;width:150px;height:18px;margin:24px auto 0;background:var(--musgo);opacity:.6;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 18'%3E%3Cpath d='M0 9h58M92 9h58' stroke='black' stroke-width='1'/%3E%3Cpath d='M63 14C64 6 73 2 87 3C86 13 76 17 63 14Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 18'%3E%3Cpath d='M0 9h58M92 9h58' stroke='black' stroke-width='1'/%3E%3Cpath d='M63 14C64 6 73 2 87 3C86 13 76 17 63 14Z'/%3E%3C/svg%3E") center/contain no-repeat}
+#catalogo .cat-chips{flex-wrap:nowrap;justify-content:safe center;gap:34px;width:max-content;max-width:100%;margin:22px auto 48px;overflow-x:auto;scrollbar-width:none}
+#catalogo .cat-chips::-webkit-scrollbar{display:none}
+#catalogo .cat-chips button{flex:none;position:relative;border:0;border-radius:0;background:transparent;color:var(--musgo);padding:8px 2px 11px;font-size:.74rem;letter-spacing:.18em;white-space:nowrap}
+#catalogo .cat-chips button::after{content:"";position:absolute;left:50%;right:50%;bottom:2px;height:2px;border-radius:2px;background:var(--arcilla);transition:left .35s,right .35s}
+#catalogo .cat-chips button.on{background:transparent;color:var(--bosque);font-weight:500}
+#catalogo .cat-chips button.on::after{left:0;right:0}
+@media (max-width:860px){#catalogo .sec-t::after{margin-top:20px}#catalogo .cat-chips{gap:24px;margin:18px auto 36px}#catalogo .cat-chips button{font-size:.68rem;letter-spacing:.14em}}
 @keyframes teIn{0%{opacity:0;transform:translateY(26px) scale(.965);filter:blur(6px)}60%{opacity:1;filter:blur(0)}80%{transform:translateY(-3px) scale(1.004)}100%{opacity:1;transform:none;filter:none}}
 @keyframes teInPC{0%{opacity:0;transform:translateY(16px) scale(.985);filter:blur(3px)}60%{opacity:1;filter:blur(0)}82%{transform:translateY(-1.5px) scale(1.002)}100%{opacity:1;transform:none;filter:none}}
 @keyframes teImg{from{transform:scale(1.09)}to{transform:scale(1)}}
