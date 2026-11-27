@@ -40,6 +40,8 @@ input:focus,textarea:focus{outline:2px solid var(--musgo);outline-offset:1px}
 .btn:active{transform:scale(.98)}
 .btn.sec{background:transparent;color:var(--bosque);border:1px solid var(--bosque)}
 .btn:disabled{opacity:.5}
+.clave{position:relative}.clave input{padding-right:54px}
+.ojo{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;color:var(--musgo);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .msg{margin-top:14px;font-size:.92rem;color:var(--mal);min-height:1.2em}
 /* inicio */
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -326,7 +328,7 @@ let perfil=null,pilas=[],guardado={},ajustes={},palSel='1';
 
 function toast(t,mal){const e=$('#toast');e.textContent=t;e.className='toast on'+(mal?' mal':'');clearTimeout(toast.h);toast.h=setTimeout(()=>e.className='toast',2600)}
 let actual='login',recuperando=false;
-function ir(id,volver){actual=id;
+function ir(id,volver){actual=id;if(typeof ocultarClaves==='function'&&document.querySelector('.clave'))ocultarClaves();
   document.querySelectorAll('.pantalla').forEach(p=>p.hidden=p.id!==id);
   $('#top').hidden=(id==='login'||id==='sinacceso'||id==='olvide'||id==='recuperar');
   $('#atras').hidden=(id==='inicio'||id==='login'||id==='sinacceso'||id==='olvide'||id==='recuperar');
@@ -747,6 +749,23 @@ $('#formRecuperar').addEventListener('submit',async e=>{
   if(session)await cargarPerfil(session.user);else ir('login');
 });
 sb.auth.onAuthStateChange((ev)=>{if(ev==='PASSWORD_RECOVERY'){recuperando=true;ir('recuperar')}});
+/* ---- ver / ocultar la clave que se escribe ---- */
+const OJO='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>';
+function ponerOjo(inp,ver){
+  const b=inp.parentNode.querySelector('.ojo');
+  inp.type=ver?'text':'password';
+  b.innerHTML=OJO+(ver?'<path d="M4 4l16 16"/>':'')+'</svg>';
+  b.setAttribute('aria-label',ver?'Ocultar contraseña':'Ver contraseña');b.title=b.getAttribute('aria-label');
+}
+function ocultarClaves(){document.querySelectorAll('.clave input').forEach(i=>ponerOjo(i,false))}
+document.querySelectorAll('input[type=password]').forEach(inp=>{
+  inp.setAttribute('autocapitalize','off');inp.setAttribute('autocorrect','off');inp.spellcheck=false;
+  const w=document.createElement('div');w.className='clave';inp.parentNode.insertBefore(w,inp);w.appendChild(inp);
+  const b=document.createElement('button');b.type='button';b.className='ojo';w.appendChild(b);
+  b.onclick=()=>ponerOjo(inp,inp.type==='password');
+  ponerOjo(inp,false);
+});
+document.querySelectorAll('form').forEach(f=>f.addEventListener('submit',ocultarClaves));
 iniciar();
 </script>
 </body>
