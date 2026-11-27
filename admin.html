@@ -730,6 +730,7 @@ $('#formOlvide').addEventListener('submit',async e=>{
   const r=await sb.auth.resetPasswordForEmail($('#emOlvide').value.trim(),{redirectTo:location.origin+location.pathname});
   $('#btnOlvide').disabled=false;
   if(r.error&&/rate|seconds|limit/i.test(r.error.message)){m.textContent='Espera unos minutos antes de pedir otro enlace.';return}
+  if(r.error){m.textContent='No se pudo enviar el enlace. Inténtalo más tarde. (Detalle: '+r.error.message+')';return}
   m.style.color='var(--ok)';m.textContent='Si ese correo tiene cuenta, te llegará un enlace. Revisa también la carpeta de spam.';
 });
 $('#formRecuperar').addEventListener('submit',async e=>{
